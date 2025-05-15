@@ -1,9 +1,7 @@
+import { MealPrep } from "./components/MealPrep";
+
 function App() {
-  return (
-    <>
-      <div className="text-lg text-blue-500">Hey there meal prep!</div>
-    </>
-  );
+  return <MealPrep />;
 }
 
 export default App;

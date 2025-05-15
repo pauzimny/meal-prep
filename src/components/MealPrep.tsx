@@ -66,15 +66,11 @@ export function MealPrep() {
                 setNewIngredient({ ...newIngredient, quantity: e.target.value })
               }
             />
-            <Button
-              onClick={handleAddIngredient}
-              className="bg-blue-500 hover:bg-blue-600"
-            >
+            <Button onClick={handleAddIngredient} variant="default">
               Add
             </Button>
           </div>
 
-          {/* Ingredients List */}
           <div className="mt-4">
             {ingredients.map((ingredient, index) => (
               <div
@@ -106,7 +102,7 @@ export function MealPrep() {
               <Button
                 key={type}
                 onClick={() => setMealType(type)}
-                variant={mealType === type ? "default" : "secondary"}
+                variant={mealType === type ? "default" : "outline"}
                 className={mealType === type ? "bg-blue-500 text-white" : ""}
               >
                 {type}

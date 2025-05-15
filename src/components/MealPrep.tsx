@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 interface Ingredient {
   name: string;
@@ -46,30 +48,30 @@ export function MealPrep() {
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Available Ingredients</h2>
           <div className="flex gap-4 mb-4">
-            <input
+            <Input
               type="text"
               placeholder="Ingredient name"
-              className="flex-1 p-2 border rounded"
+              className="flex-1"
               value={newIngredient.name}
               onChange={(e) =>
                 setNewIngredient({ ...newIngredient, name: e.target.value })
               }
             />
-            <input
+            <Input
               type="text"
               placeholder="Quantity"
-              className="flex-1 p-2 border rounded"
+              className="flex-1"
               value={newIngredient.quantity}
               onChange={(e) =>
                 setNewIngredient({ ...newIngredient, quantity: e.target.value })
               }
             />
-            <button
+            <Button
               onClick={handleAddIngredient}
-              className="!bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-blue-500 hover:bg-blue-600"
             >
               Add
-            </button>
+            </Button>
           </div>
 
           {/* Ingredients List */}
@@ -82,14 +84,15 @@ export function MealPrep() {
                 <span>
                   {ingredient.name} - {ingredient.quantity}
                 </span>
-                <button
+                <Button
+                  variant="ghost"
                   onClick={() =>
                     setIngredients(ingredients.filter((_, i) => i !== index))
                   }
                   className="text-red-500 hover:text-red-700"
                 >
                   Remove
-                </button>
+                </Button>
               </div>
             ))}
           </div>
@@ -100,29 +103,26 @@ export function MealPrep() {
           <h2 className="text-xl font-semibold mb-4">Select Meal Type</h2>
           <div className="flex gap-4">
             {["Breakfast", "Lunch", "Dinner"].map((type) => (
-              <button
+              <Button
                 key={type}
                 onClick={() => setMealType(type)}
-                className={`px-4 py-2 rounded ${
-                  mealType === type
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
+                variant={mealType === type ? "default" : "secondary"}
+                className={mealType === type ? "bg-blue-500 text-white" : ""}
               >
                 {type}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
 
         {/* Submit Button */}
-        <button
+        <Button
           onClick={handleSubmit}
           disabled={ingredients.length === 0 || !mealType}
-          className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           Get Meal Suggestions
-        </button>
+        </Button>
 
         {/* Results Section */}
         {suggestions.length > 0 && (

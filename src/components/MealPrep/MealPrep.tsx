@@ -1,10 +1,19 @@
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 interface Ingredient {
   name: string;
-  quantity: string;
+  quantity: number;
+  unit: string;
 }
 
 interface MealSuggestion {
@@ -14,19 +23,22 @@ interface MealSuggestion {
   recipe: string;
 }
 
+const UNITS = ["g", "cup", "unit", "ml"] as const;
+
 export function MealPrep() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [newIngredient, setNewIngredient] = useState({
+  const [newIngredient, setNewIngredient] = useState<Ingredient>({
     name: "",
-    quantity: "",
+    quantity: 0,
+    unit: "g",
   });
   const [mealType, setMealType] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<MealSuggestion[]>([]);
+  const [suggestions] = useState<MealSuggestion[]>([]);
 
   const handleAddIngredient = () => {
-    if (newIngredient.name && newIngredient.quantity) {
+    if (newIngredient.name && newIngredient.quantity > 0) {
       setIngredients([...ingredients, newIngredient]);
-      setNewIngredient({ name: "", quantity: "" });
+      setNewIngredient({ name: "", quantity: 0, unit: "g" });
     }
   };
 
@@ -46,7 +58,9 @@ export function MealPrep() {
 
         {/* Ingredients Input Section */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Available Ingredients</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            Set your available Ingredients
+          </h2>
           <div className="flex gap-4 mb-4">
             <Input
               type="text"
@@ -57,20 +71,48 @@ export function MealPrep() {
                 setNewIngredient({ ...newIngredient, name: e.target.value })
               }
             />
-            <Input
-              type="text"
-              placeholder="Quantity"
-              className="flex-1"
-              value={newIngredient.quantity}
-              onChange={(e) =>
-                setNewIngredient({ ...newIngredient, quantity: e.target.value })
-              }
-            />
-            <Button onClick={handleAddIngredient} variant="default">
+            <div className="flex gap-2">
+              <Input
+                type="number"
+                placeholder="Quantity"
+                className="w-32"
+                min="0"
+                step="0.1"
+                value={newIngredient.quantity}
+                onChange={(e) =>
+                  setNewIngredient({
+                    ...newIngredient,
+                    quantity: parseFloat(e.target.value) || 0,
+                  })
+                }
+              />
+              <Select
+                value={newIngredient.unit}
+                onValueChange={(value: string) =>
+                  setNewIngredient({ ...newIngredient, unit: value })
+                }
+              >
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue placeholder="Unit" />
+                </SelectTrigger>
+                <SelectContent>
+                  {UNITS.map((unit) => (
+                    <SelectItem key={unit} value={unit}>
+                      {unit}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Button
+              onClick={handleAddIngredient}
+              className="bg-blue-500 hover:bg-blue-600"
+            >
               Add
             </Button>
           </div>
 
+          {/* Ingredients List */}
           <div className="mt-4">
             {ingredients.map((ingredient, index) => (
               <div
@@ -78,7 +120,7 @@ export function MealPrep() {
                 className="flex justify-between items-center p-2 bg-gray-50 rounded mb-2"
               >
                 <span>
-                  {ingredient.name} - {ingredient.quantity}
+                  {ingredient.name} - {ingredient.quantity} {ingredient.unit}
                 </span>
                 <Button
                   variant="ghost"
@@ -102,7 +144,7 @@ export function MealPrep() {
               <Button
                 key={type}
                 onClick={() => setMealType(type)}
-                variant={mealType === type ? "default" : "outline"}
+                variant={mealType === type ? "default" : "secondary"}
                 className={mealType === type ? "bg-blue-500 text-white" : ""}
               >
                 {type}

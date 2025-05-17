@@ -2,8 +2,9 @@ import { useCallback, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { QuantitySelector } from "../QuantitySelector";
+import { IngredientsList } from "./IngredientsList";
 
-interface Ingredient {
+export interface Ingredient {
   name: string;
   quantity: number;
   unit: string;
@@ -49,9 +50,9 @@ export function MealPrep() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <div className="min-h-screen py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+        <h1 className="text-3xl font-bold text-center mb-8 text-primary">
           Meal Prep Assistant
         </h1>
 
@@ -78,36 +79,13 @@ export function MealPrep() {
                 onUnitChange={changeUnit}
               />
             </div>
-            <Button
-              onClick={handleAddIngredient}
-              className="bg-blue-500 hover:bg-blue-600"
-            >
-              Add
-            </Button>
+            <Button onClick={handleAddIngredient}>Add</Button>
           </div>
 
-          {/* Ingredients List */}
-          <div className="mt-4">
-            {ingredients.map((ingredient, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center p-2 bg-gray-50 rounded mb-2"
-              >
-                <span>
-                  {ingredient.name} - {ingredient.quantity} {ingredient.unit}
-                </span>
-                <Button
-                  variant="ghost"
-                  onClick={() =>
-                    setIngredients(ingredients.filter((_, i) => i !== index))
-                  }
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Remove
-                </Button>
-              </div>
-            ))}
-          </div>
+          <IngredientsList
+            ingredients={ingredients}
+            updateIngredients={setIngredients}
+          />
         </div>
 
         {/* Meal Type Selection */}
@@ -119,7 +97,7 @@ export function MealPrep() {
                 key={type}
                 onClick={() => setMealType(type)}
                 variant={mealType === type ? "default" : "secondary"}
-                className={mealType === type ? "bg-blue-500 text-white" : ""}
+                className={mealType === type ? "bg-primary text-white" : ""}
               >
                 {type}
               </Button>
@@ -131,7 +109,6 @@ export function MealPrep() {
         <Button
           onClick={handleSubmit}
           disabled={ingredients.length === 0 || !mealType}
-          className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           Get Meal Suggestions
         </Button>

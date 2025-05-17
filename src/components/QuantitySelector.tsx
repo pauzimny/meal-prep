@@ -1,11 +1,5 @@
 import { Input } from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { UnitSelect } from "./UnitSelect";
 
 interface QuantitySelectorProps {
   quantity: number;
@@ -13,8 +7,6 @@ interface QuantitySelectorProps {
   onQuantityChange: (value: number) => void;
   onUnitChange: (value: string) => void;
 }
-
-const UNITS = ["g", "cup", "unit", "ml"] as const;
 
 export function QuantitySelector({
   quantity,
@@ -35,18 +27,7 @@ export function QuantitySelector({
           onChange={(e) => onQuantityChange(parseFloat(e.target.value) || 0)}
         />
       </div>
-      <Select value={unit} onValueChange={onUnitChange}>
-        <SelectTrigger className="w-[80px]">
-          <SelectValue placeholder="Unit" />
-        </SelectTrigger>
-        <SelectContent>
-          {UNITS.map((unit) => (
-            <SelectItem key={unit} value={unit}>
-              {unit}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <UnitSelect unit={unit} onUnitChange={onUnitChange} />
     </div>
   );
 }

@@ -1,14 +1,7 @@
-import { useState } from "react";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@radix-ui/react-select";
+import { useCallback, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { QuantitySelector } from "../QuantitySelector";
 
 interface Ingredient {
   name: string;
@@ -22,8 +15,6 @@ interface MealSuggestion {
   ingredients: string[];
   recipe: string;
 }
-
-const UNITS = ["g", "cup", "unit", "ml"] as const;
 
 export function MealPrep() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -41,6 +32,14 @@ export function MealPrep() {
       setNewIngredient({ name: "", quantity: 0, unit: "g" });
     }
   };
+
+  const changeQuantity = useCallback((newQuantity: number) => {
+    setNewIngredient((prev) => ({ ...prev, quantity: newQuantity }));
+  }, []);
+
+  const changeUnit = useCallback((newUnit: string) => {
+    setNewIngredient((prev) => ({ ...prev, unit: newUnit }));
+  }, []);
 
   const handleSubmit = () => {
     // TODO: Implement meal suggestion logic
@@ -72,37 +71,12 @@ export function MealPrep() {
               }
             />
             <div className="flex gap-2">
-              <Input
-                type="number"
-                placeholder="Quantity"
-                className="w-32"
-                min="0"
-                step="0.1"
-                value={newIngredient.quantity}
-                onChange={(e) =>
-                  setNewIngredient({
-                    ...newIngredient,
-                    quantity: parseFloat(e.target.value) || 0,
-                  })
-                }
+              <QuantitySelector
+                quantity={newIngredient.quantity}
+                unit={newIngredient.unit}
+                onQuantityChange={changeQuantity}
+                onUnitChange={changeUnit}
               />
-              <Select
-                value={newIngredient.unit}
-                onValueChange={(value: string) =>
-                  setNewIngredient({ ...newIngredient, unit: value })
-                }
-              >
-                <SelectTrigger className="w-[100px]">
-                  <SelectValue placeholder="Unit" />
-                </SelectTrigger>
-                <SelectContent>
-                  {UNITS.map((unit) => (
-                    <SelectItem key={unit} value={unit}>
-                      {unit}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
             <Button
               onClick={handleAddIngredient}

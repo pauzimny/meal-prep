@@ -52,10 +52,6 @@ export function MealPrep() {
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8 text-primary">
-          Meal Prep Assistant
-        </h1>
-
         {/* Ingredients Input Section */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">

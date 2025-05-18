@@ -8,7 +8,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <>
+    <div className="w-full min-h-[100vh] flex flex-col">
       <Heading />
       <div className="py-4 px-6 flex gap-6">
         <Link to="/" activeProps={{}} activeOptions={{ exact: true }}>
@@ -16,8 +16,10 @@ function RootComponent() {
         </Link>
         <Link to="/profile">Profile</Link>
       </div>
-      <Outlet />
+      <div className="grow p-6 w-[100vw]">
+        <Outlet />
+      </div>
       <TanStackRouterDevtools />
-    </>
+    </div>
   );
 }

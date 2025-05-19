@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
-import { redirect } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
+
 import type { Tables } from "@/lib/supabase";
+import { useNavigate } from "@tanstack/react-router";
 
 export type UserProfile = Tables["users"];
 
 export function Profile() {
   const { signOut, user: authenticatedUser } = useAuth();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignOut = async () => {
-    await signOut();
-    redirect({ to: "/auth" });
-  };
-
   useEffect(() => {
+    let mounted = true;
+
     async function fetchProfile() {
       try {
         const { data, error } = await supabase
@@ -31,16 +30,35 @@ export function Profile() {
           .single();
 
         if (error) throw error;
-        setUser(data);
+        if (mounted) {
+          setUser(data);
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        if (mounted) {
+          setError(err instanceof Error ? err.message : "An error occurred");
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
 
     fetchProfile();
+
+    return () => {
+      mounted = false;
+    };
   }, [authenticatedUser?.id]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate({ to: "/auth" });
+    } catch (err) {
+      console.error("Error signing out:", err);
+    }
+  };
 
   if (loading) {
     return <div>Loading profile...</div>;

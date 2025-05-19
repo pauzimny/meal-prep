@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
+import { redirect } from "@tanstack/react-router";
 
 interface AuthContextType {
   user: User | null;
@@ -49,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
       setUser(null);
+      redirect({ to: "/auth" });
     } catch (err) {
       console.error("Sign out error:", err);
       throw err;

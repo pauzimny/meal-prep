@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as testsProtectedRoutesTestImport } from './routes/__tests__/protected-routes.test'
 
 // Create/Update Routes
 
@@ -32,6 +33,12 @@ const AuthRoute = AuthImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const testsProtectedRoutesTestRoute = testsProtectedRoutesTestImport.update({
+  id: '/__tests__/protected-routes/test',
+  path: '/protected-routes/test',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/__tests__/protected-routes/test': {
+      id: '/__tests__/protected-routes/test'
+      path: '/protected-routes/test'
+      fullPath: '/protected-routes/test'
+      preLoaderRoute: typeof testsProtectedRoutesTestImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/profile': typeof ProfileRoute
+  '/protected-routes/test': typeof testsProtectedRoutesTestRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/profile': typeof ProfileRoute
+  '/protected-routes/test': typeof testsProtectedRoutesTestRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/profile': typeof ProfileRoute
+  '/__tests__/protected-routes/test': typeof testsProtectedRoutesTestRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/profile'
+  fullPaths: '/' | '/auth' | '/profile' | '/protected-routes/test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/profile'
-  id: '__root__' | '/' | '/auth' | '/profile'
+  to: '/' | '/auth' | '/profile' | '/protected-routes/test'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/profile'
+    | '/__tests__/protected-routes/test'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +119,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   ProfileRoute: typeof ProfileRoute
+  testsProtectedRoutesTestRoute: typeof testsProtectedRoutesTestRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   ProfileRoute: ProfileRoute,
+  testsProtectedRoutesTestRoute: testsProtectedRoutesTestRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +141,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/auth",
-        "/profile"
+        "/profile",
+        "/__tests__/protected-routes/test"
       ]
     },
     "/": {
@@ -128,6 +153,9 @@ export const routeTree = rootRoute
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/__tests__/protected-routes/test": {
+      "filePath": "__tests__/protected-routes.test.tsx"
     }
   }
 }

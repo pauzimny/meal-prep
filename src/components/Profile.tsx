@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
+import { redirect } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 import type { Tables } from "@/lib/supabase";
 
-export type UserProfile = Tables["profiles"];
+export type UserProfile = Tables["users"];
 
-export function Profile({ userId }: { userId: string }) {
+export function Profile() {
+  const { signOut, user: authenticatedUser } = useAuth();
+
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleSignOut = async () => {
+    await signOut();
+    redirect({ to: "/auth" });
+  };
 
   useEffect(() => {
     async function fetchProfile() {
       try {
         const { data, error } = await supabase
-          .from("profiles")
+          .from("users")
           .select("*")
-          .eq("id", userId)
+          .eq("id", authenticatedUser?.id)
           .single();
 
         if (error) throw error;
@@ -30,7 +40,7 @@ export function Profile({ userId }: { userId: string }) {
     }
 
     fetchProfile();
-  }, [userId]);
+  }, [authenticatedUser?.id]);
 
   if (loading) {
     return <div>Loading profile...</div>;
@@ -51,10 +61,13 @@ export function Profile({ userId }: { userId: string }) {
     .toUpperCase();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Profile</CardTitle>
+          <Button variant="outline" onClick={handleSignOut}>
+            Sign Out
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="flex items-center space-x-4">

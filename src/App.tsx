@@ -1,21 +1,34 @@
-// import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { AuthProvider, useAuth } from "@/lib/auth-context";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
+  context: undefined,
   routeTree,
   defaultPreload: "intent",
   scrollRestoration: true,
 });
-// Register things for typesafety
+
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }
 }
 
-function App() {
-  return <RouterProvider router={router} />;
+function AppContent() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return <RouterProvider router={router} context={{ user }} />;
 }
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}

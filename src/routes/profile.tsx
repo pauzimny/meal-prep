@@ -1,11 +1,15 @@
 import { Profile } from "@/components/Profile";
-import { mockedUser } from "@/mocks/user.mock";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
+function ProfileRoute() {
+  return <Profile />;
+}
 
 export const Route = createFileRoute("/profile")({
-  component: RouteComponent,
+  component: ProfileRoute,
+  beforeLoad: async ({ context }) => {
+    if (!context.user) {
+      throw redirect({ to: "/auth" });
+    }
+  },
 });
-
-function RouteComponent() {
-  return <Profile user={mockedUser} />;
-}

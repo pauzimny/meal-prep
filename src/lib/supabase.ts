@@ -11,7 +11,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Types for our database tables
 export type Tables = {
-  profiles: {
+  users: {
     id: string;
     created_at: string;
     name: string;

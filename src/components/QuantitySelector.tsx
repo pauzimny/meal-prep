@@ -23,7 +23,7 @@ export function QuantitySelector({
           className="w-32 pr-8"
           min="0"
           step="0.1"
-          value={quantity}
+          value={quantity || 0}
           onChange={(e) => onQuantityChange(parseFloat(e.target.value) || 0)}
         />
       </div>

@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 
 import type { Tables } from "@/lib/supabase";
 import { useNavigate } from "@tanstack/react-router";
+import { IconButton } from "./ui/icon-button";
+import { Textarea } from "./ui/textarea";
 
 export type UserProfile = Tables["users"];
 
@@ -17,6 +20,8 @@ export function Profile() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isEditingDietaryPreferences, setIsEditingDietaryPreferences] =
+    useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -60,6 +65,10 @@ export function Profile() {
     }
   };
 
+  const toggleEditDietaryPreferences = () => {
+    setIsEditingDietaryPreferences((prev) => !prev);
+  };
+
   if (loading) {
     return <div>Loading profile...</div>;
   }
@@ -71,6 +80,8 @@ export function Profile() {
   if (!user) {
     return <div>No profile found</div>;
   }
+
+  const isUserDietaryPreferencesEmpty = user.dietary_preferences.length === 0;
 
   const initials = user.name
     .split(" ")
@@ -125,19 +136,33 @@ export function Profile() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Dietary Preferences</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>Dietary Preferences</CardTitle>
+            <IconButton
+              variant="outline"
+              size="icon"
+              onClick={toggleEditDietaryPreferences}
+            >
+              <Pencil />
+            </IconButton>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {user.dietary_preferences.map((preference) => (
-              <span
-                key={preference}
-                className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
-              >
-                {preference}
-              </span>
-            ))}
-          </div>
+          {isEditingDietaryPreferences && <Textarea rows={5} />}
+          {!isEditingDietaryPreferences && (
+            <div className="flex flex-wrap gap-2">
+              {isUserDietaryPreferencesEmpty
+                ? "N/A"
+                : user.dietary_preferences.map((preference) => (
+                    <span
+                      key={preference}
+                      className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+                    >
+                      {preference}
+                    </span>
+                  ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

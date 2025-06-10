@@ -52,29 +52,7 @@ export function Auth() {
       }
 
       if (authData.user) {
-        const { error: profileError } = await supabase.from("users").insert([
-          {
-            id: authData.user.id,
-            name,
-            email,
-            meal_count: 0,
-            favorite_cuisine: "",
-            dietary_preferences: [],
-          },
-        ]);
-
-        if (profileError) {
-          console.error("Profile creation error:", profileError);
-          throw profileError;
-        }
-
-        setMessage(
-          "Registration successful! Please check your email for verification."
-        );
-
-        setEmail("");
-        setPassword("");
-        setName("");
+        setIsSignUp(false);
       }
     } catch (err) {
       const errorMessage =
@@ -111,6 +89,37 @@ export function Auth() {
       }
 
       if (data.user) {
+        const user = data.user;
+
+        // check whether the user profile already exists
+        // TODO: REFACTOR!
+        const { error: fetchError } = await supabase
+          .from("users")
+          .select("id")
+          .eq("id", user.id)
+          .single();
+
+        if (fetchError && fetchError.code === "PGRST116") {
+          const { error: insertError } = await supabase.from("users").insert([
+            {
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata.name ?? "",
+              meal_count: 0,
+              favorite_cuisine: "",
+              dietary_preferences: [],
+            },
+          ]);
+
+          if (insertError) {
+            console.error("Error profile creation:", insertError);
+          } else {
+            console.log("The new user profile has been created.");
+          }
+        } else {
+          console.log("The user already exists.");
+        }
+
         setMessage("Successfully signed in!");
         setEmail("");
         setPassword("");

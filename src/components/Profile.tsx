@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
-
 import type { Tables } from "@/lib/supabase";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
-import { Textarea } from "./ui/textarea";
 
 export type UserProfile = Tables["users"];
 
@@ -22,6 +20,10 @@ export function Profile() {
   const [error, setError] = useState<string | null>(null);
   const [isEditingDietaryPreferences, setIsEditingDietaryPreferences] =
     useState(false);
+  const [newPreference, setNewPreference] = useState("");
+  const [showAddInput, setShowAddInput] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
 
   useEffect(() => {
     let mounted = true;
@@ -56,6 +58,12 @@ export function Profile() {
     };
   }, [authenticatedUser?.id]);
 
+  useEffect(() => {
+    if (user) {
+      setDietaryPreferences(user.dietary_preferences);
+    }
+  }, [user]);
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -67,6 +75,28 @@ export function Profile() {
 
   const toggleEditDietaryPreferences = () => {
     setIsEditingDietaryPreferences((prev) => !prev);
+  };
+
+  const handleAddPreference = async () => {
+    if (!newPreference.trim()) return;
+    const updatedPreferences = [...dietaryPreferences, newPreference.trim()];
+    setSaving(true);
+    const { error } = await supabase
+      .from("users")
+      .update({ dietary_preferences: updatedPreferences })
+      .eq("id", user?.id)
+      .select();
+    setSaving(false);
+    if (!error) {
+      setDietaryPreferences(updatedPreferences);
+      setUser(
+        (prev) => prev && { ...prev, dietary_preferences: updatedPreferences }
+      );
+      setNewPreference("");
+      setShowAddInput(false);
+    } else {
+      alert("Failed to update dietary preferences");
+    }
   };
 
   if (loading) {
@@ -148,8 +178,71 @@ export function Profile() {
           </div>
         </CardHeader>
         <CardContent>
-          {isEditingDietaryPreferences && <Textarea rows={5} />}
-          {!isEditingDietaryPreferences && (
+          {isEditingDietaryPreferences ? (
+            <div>
+              <div className="flex flex-wrap gap-2 mb-2">
+                {dietaryPreferences.length === 0
+                  ? "N/A"
+                  : dietaryPreferences.map((preference) => (
+                      <span
+                        key={preference}
+                        className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+                      >
+                        {preference}
+                      </span>
+                    ))}
+              </div>
+              {showAddInput ? (
+                <div className="flex gap-2 items-center">
+                  <input
+                    className="border rounded px-2 py-1 text-sm"
+                    value={newPreference}
+                    onChange={(e) => setNewPreference(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleAddPreference();
+                    }}
+                    disabled={saving}
+                    autoFocus
+                  />
+                  <Button
+                    size="sm"
+                    onClick={handleAddPreference}
+                    disabled={saving || !newPreference.trim()}
+                  >
+                    Add
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setShowAddInput(false);
+                      setNewPreference("");
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <IconButton
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setShowAddInput(true)}
+                  aria-label="Add dietary preference"
+                >
+                  <Plus />
+                </IconButton>
+              )}
+              <div className="mt-4">
+                <Button
+                  variant="secondary"
+                  onClick={toggleEditDietaryPreferences}
+                  disabled={saving}
+                >
+                  Done
+                </Button>
+              </div>
+            </div>
+          ) : (
             <div className="flex flex-wrap gap-2">
               {isUserDietaryPreferencesEmpty
                 ? "N/A"

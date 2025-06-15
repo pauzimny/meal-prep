@@ -1,8 +1,8 @@
-import { AuthProvider, useAuth } from "@/lib/auth-context";
+import * as React from "react";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
-import React from "react";
+import { AuthProvider, useAuth } from "./lib/auth-context";
 
 const router = createRouter({
   context: undefined,

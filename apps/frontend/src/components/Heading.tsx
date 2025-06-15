@@ -1,3 +1,4 @@
+import * as React from "react";
 import mealHero from "../../public/meal-hero.png";
 
 export function Heading() {

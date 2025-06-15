@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Select,
   SelectContent,
@@ -5,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../components/ui/select";
 
 const UNITS = ["g", "cup", "unit", "ml"] as const;
 

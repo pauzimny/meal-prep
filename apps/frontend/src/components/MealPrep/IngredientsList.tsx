@@ -1,6 +1,7 @@
+import * as React from "react";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
-import type { Ingredient } from "./MealPrep";
+import { Ingredient } from "./types";
 
 interface IngredientsListProps {
   ingredients: Ingredient[];

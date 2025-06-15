@@ -1,11 +1,11 @@
+import * as React from "react";
 import { useCallback, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { QuantitySelector } from "../QuantitySelector";
 import { IngredientsList } from "./IngredientsList";
-import React from "react";
 import { useGenerateReceipe } from "../../query-hooks/receipe";
-import { Ingredient, MealSuggestion } from "./types";
+import { type Ingredient, type MealSuggestion } from "./types";
 import { generatePrompt } from "./helpers";
 
 export function MealPrep() {

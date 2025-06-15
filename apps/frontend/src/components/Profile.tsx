@@ -1,11 +1,17 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
 import { Pencil, Plus } from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/lib/auth-context";
-import type { Tables } from "@/lib/supabase";
+import { supabase } from "../lib/supabase";
+import { useAuth } from "../lib/auth-context";
+import type { Tables } from "../lib/supabase";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
 

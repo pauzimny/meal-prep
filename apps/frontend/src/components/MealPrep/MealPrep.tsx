@@ -3,19 +3,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { QuantitySelector } from "../QuantitySelector";
 import { IngredientsList } from "./IngredientsList";
-
-export interface Ingredient {
-  name: string;
-  quantity: number;
-  unit: string;
-}
-
-interface MealSuggestion {
-  title: string;
-  type: string;
-  ingredients: string[];
-  recipe: string;
-}
+import React from "react";
+import { useGenerateReceipe } from "../../query-hooks/receipe";
+import { Ingredient, MealSuggestion } from "./types";
+import { generatePrompt } from "./helpers";
 
 export function MealPrep() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -26,6 +17,10 @@ export function MealPrep() {
   });
   const [mealType, setMealType] = useState<string>("");
   const [suggestions] = useState<MealSuggestion[]>([]);
+
+  const { mutate, error, isPending, data } = useGenerateReceipe();
+
+  console.log("meal suggestions:", data);
 
   const handleAddIngredient = () => {
     if (newIngredient.name && newIngredient.quantity > 0) {
@@ -43,10 +38,11 @@ export function MealPrep() {
   }, []);
 
   const handleSubmit = () => {
-    // TODO: Implement meal suggestion logic
-    // This is where we'll add the API call to get meal suggestions
     console.log("Ingredients:", ingredients);
     console.log("Meal Type:", mealType);
+
+    const prompt = generatePrompt(ingredients, mealType);
+    mutate(prompt);
   };
 
   return (
@@ -104,10 +100,12 @@ export function MealPrep() {
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
-          disabled={ingredients.length === 0 || !mealType}
+          disabled={ingredients.length === 0 || !mealType || isPending}
         >
           Get Meal Suggestions
         </Button>
+
+        {!!error && <div className="text-red-700 mt-2">{error.message}</div>}
 
         {/* Results Section */}
         {suggestions.length > 0 && (

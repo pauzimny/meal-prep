@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ChangeEvent, useEffect } from "react";
 import { Input } from "./ui/input";
 import { UnitSelect } from "./UnitSelect";
 
@@ -15,17 +16,41 @@ export function QuantitySelector({
   onQuantityChange,
   onUnitChange,
 }: QuantitySelectorProps) {
+  const [inputValue, setInputValue] = React.useState(quantity.toString());
+
+  useEffect(() => {
+    setInputValue(quantity.toString());
+  }, [quantity]);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    if (/^\d*\.?\d*$/.test(e.target.value)) {
+      const num = parseFloat(e.target.value);
+      if (!isNaN(num)) {
+        onQuantityChange(num);
+      }
+    }
+  };
+
+  const handleInputBlur = () => {
+    if (inputValue === "") {
+      setInputValue("0");
+      onQuantityChange(0);
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
       <div className="relative">
         <Input
           type="number"
-          placeholder="Quantity"
-          className="w-32 pr-8"
+          placeholder="quantity"
+          className="w-32"
           min="0"
           step="0.1"
-          value={quantity || 0}
-          onChange={(e) => onQuantityChange(parseFloat(e.target.value) || 0)}
+          value={inputValue}
+          onChange={handleInputChange}
+          onBlur={handleInputBlur}
         />
       </div>
       <UnitSelect unit={unit} onUnitChange={onUnitChange} />

@@ -15,8 +15,6 @@
     "moduleDetection": "force",
     "emitDeclarationOnly": true,
     "jsx": "react-jsx",
-
-    /* Linting */
     "strict": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,

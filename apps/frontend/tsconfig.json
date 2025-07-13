@@ -4,7 +4,9 @@
     "paths": {
       "@/*": ["apps/frontend/src/*"]
     },
-    "composite": true
+    "composite": true,
+    "strictNullChecks": true,
+    "strict": true
   },
   "extends": "./tsconfig.app.json",
   "files": [],

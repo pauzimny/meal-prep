@@ -4,13 +4,6 @@ export interface Ingredient {
   unit: string;
 }
 
-export interface MealSuggestion {
-  title: string;
-  type: string;
-  ingredients: string[];
-  recipe: string;
-}
-
 export interface MealSuggestionResultProps {
   title: string;
   description: string;

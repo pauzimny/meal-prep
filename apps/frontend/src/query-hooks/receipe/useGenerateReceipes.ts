@@ -12,7 +12,7 @@ export const useGenerateReceipe = () => {
 
       if (!res.ok) throw new Error("Coś poszło nie tak");
       const data = await res.json();
-      return data.result;
+      return data;
     },
   });
 };

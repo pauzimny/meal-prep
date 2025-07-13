@@ -7,6 +7,7 @@ import { IngredientsList } from "./IngredientsList";
 import { useGenerateReceipe } from "../../query-hooks/receipe";
 import { type Ingredient, type MealSuggestion } from "./types";
 import { generatePrompt } from "./helpers";
+import { MealSuggestionResult } from "./MealSuggestionResult";
 
 export function MealPrep() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -137,6 +138,7 @@ export function MealPrep() {
           </div>
         )}
       </div>
+      {data && <MealSuggestionResult {...data} />}
     </div>
   );
 }

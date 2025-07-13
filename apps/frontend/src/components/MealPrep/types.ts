@@ -10,3 +10,9 @@ export interface MealSuggestion {
   ingredients: string[];
   recipe: string;
 }
+
+export interface MealSuggestionResultProps {
+  title: string;
+  description: string;
+  bullets: string[];
+}

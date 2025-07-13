@@ -1,12 +1,17 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-const receipeResponseSchema = z.object({
+export const receipeResponseSchema = z.object({
   title: z.string(),
-  description: z.string(),
-  bullets: z.array(z.string()),
+  description: z.array(z.string()).nullable(),
 });
 
-const jsonSchema = zodToJsonSchema(receipeResponseSchema, "AnswerSchema");
+export const receipeOpenAISchema = zodToJsonSchema(
+  receipeResponseSchema,
+  "AnswerSchema"
+);
 
-console.log(JSON.stringify(jsonSchema, null, 2));
+console.log(JSON.stringify(receipeOpenAISchema, null, 2));
+console.log(receipeOpenAISchema?.definitions?.AnswerSchema);
+
+export type ReceipeResponseSchema = z.infer<typeof receipeResponseSchema>;

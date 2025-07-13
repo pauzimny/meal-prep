@@ -3,7 +3,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "@contracts/*": ["packages/contracts/src/*"]
+      "@meal-prep/contracts": ["packages/contracts/*"]
     }
   }
 }

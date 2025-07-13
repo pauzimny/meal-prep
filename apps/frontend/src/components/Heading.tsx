@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export function Heading() {
   return (
     <div className="relative w-full h-[var(--header-height)] overflow-hidden">

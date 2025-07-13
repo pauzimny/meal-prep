@@ -1,12 +1,12 @@
-import * as React from "react";
 import { Button, type ButtonProps } from "./button";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
+import { forwardRef } from "react";
 
 interface IconButtonProps extends Omit<ButtonProps, "size"> {
   size?: "icon" | "sm" | "md" | "lg";
 }
 
-const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ className, size = "icon", ...props }, ref) => {
     return (
       <Button

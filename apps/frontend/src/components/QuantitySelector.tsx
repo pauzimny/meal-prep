@@ -1,5 +1,4 @@
-import * as React from "react";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { UnitSelect } from "./UnitSelect";
 
@@ -16,7 +15,7 @@ export function QuantitySelector({
   onQuantityChange,
   onUnitChange,
 }: QuantitySelectorProps) {
-  const [inputValue, setInputValue] = React.useState(quantity.toString());
+  const [inputValue, setInputValue] = useState(quantity.toString());
 
   useEffect(() => {
     setInputValue(quantity.toString());

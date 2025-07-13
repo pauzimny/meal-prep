@@ -1,4 +1,3 @@
-import * as React from "react";
 import { type MealSuggestionResultProps } from "./types";
 
 export const MealSuggestionResult = ({

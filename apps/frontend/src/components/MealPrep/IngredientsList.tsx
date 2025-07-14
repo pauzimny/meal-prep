@@ -29,7 +29,7 @@ export function IngredientsList({
             }
             className="text-destructive hover:text-red-700 hover:border-red-700 border-destructive hover:bg-red-50"
           >
-            <Trash />
+            <Trash className="w-4 aspect-square pr-1 shrink-0" />
             Remove
           </Button>
         </div>

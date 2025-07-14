@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { MealPrep } from "@/components/MealPrep/MealPrep";
+import { MealPrep } from "../components/MealPrep/MealPrep";
 
 function HomeRoute() {
   return <MealPrep />;

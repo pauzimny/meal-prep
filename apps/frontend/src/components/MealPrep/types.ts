@@ -8,4 +8,5 @@ export interface MealSuggestionResultProps {
   title: string;
   description: string;
   bullets: string[];
+  ingredients: string[];
 }

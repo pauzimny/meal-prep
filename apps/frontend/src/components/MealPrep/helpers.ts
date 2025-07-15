@@ -18,7 +18,7 @@ export const generatePrompt = (
 ): string => {
   const baseText = `Generate meal suggestions for given ingredients: ${formatIngredientsForPrompt(
     ingredients
-  )}. It should be ${mealType}.The output should be returned according to given JSON schema: title, description and bullets (as receipe steps).`;
+  )}. It should be ${mealType}.The output should be returned according to given JSON schema: ingredients list, title, description and bullets (as receipe steps).`;
 
   return baseText;
 };

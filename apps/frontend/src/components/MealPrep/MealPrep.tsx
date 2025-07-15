@@ -7,14 +7,19 @@ import { useGenerateReceipe } from "../../query-hooks/receipe";
 import { type Ingredient } from "./types";
 import { generatePrompt } from "./helpers";
 import { MealSuggestionResult } from "./MealSuggestionResult";
+import { Loader } from "lucide-react";
+import { SelectMealType } from "./SelectMealType";
+
+const initialIngredient = {
+  name: "",
+  quantity: 0,
+  unit: "g",
+};
 
 export function MealPrep() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [newIngredient, setNewIngredient] = useState<Ingredient>({
-    name: "",
-    quantity: 0,
-    unit: "g",
-  });
+  const [newIngredient, setNewIngredient] =
+    useState<Ingredient>(initialIngredient);
   const [mealType, setMealType] = useState<string>("");
 
   const { mutate, error, isPending, data } = useGenerateReceipe();
@@ -34,6 +39,10 @@ export function MealPrep() {
 
   const changeUnit = useCallback((newUnit: string) => {
     setNewIngredient((prev) => ({ ...prev, unit: newUnit }));
+  }, []);
+
+  const changeMealType = useCallback((newMealType: string) => {
+    setMealType(newMealType);
   }, []);
 
   const handleSubmit = () => {
@@ -78,31 +87,19 @@ export function MealPrep() {
             updateIngredients={setIngredients}
           />
         </div>
-
-        {/* Meal Type Selection */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Select Meal Type</h2>
-          <div className="flex gap-4">
-            {["Breakfast", "Lunch", "Dinner"].map((type) => (
-              <Button
-                key={type}
-                onClick={() => setMealType(type)}
-                variant={mealType === type ? "default" : "secondary"}
-                className={mealType === type ? "bg-primary text-white" : ""}
-              >
-                {type}
-              </Button>
-            ))}
-          </div>
-        </div>
+        <SelectMealType mealType={mealType} selectMealType={changeMealType} />
 
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
           disabled={ingredients.length === 0 || !mealType || isPending}
-          className="ml-auto"
+          className="ml-auto w-[178px]"
         >
-          Get Meal Suggestions
+          {isPending ? (
+            <Loader className="animate-spin w-6 h-6 text-white" />
+          ) : (
+            "Get Meal Suggestions"
+          )}
         </Button>
 
         {!!error && <div className="text-red-700 mt-2">{error.message}</div>}

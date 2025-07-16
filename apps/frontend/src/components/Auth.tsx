@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabase";
 import {
   Card,
   CardContent,
@@ -12,6 +11,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useUserStore } from "../stores/userStore";
 import { type UserProfileSchema } from "@meal-prep/contracts";
+import { signIn, signUp } from "../lib/supabase/auth";
+import { addNewUserProfile, getUserProfile } from "../lib/supabase/user";
 
 export function Auth() {
   const [loading, setLoading] = useState(false);
@@ -40,14 +41,10 @@ export function Auth() {
     setMessage(null);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await signUp({
         email,
         password,
-        options: {
-          data: {
-            name: name,
-          },
-        },
+        name,
       });
 
       if (authError) {
@@ -82,7 +79,7 @@ export function Auth() {
     setMessage(null);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await signIn({
         email,
         password,
       });
@@ -98,11 +95,9 @@ export function Auth() {
         // check whether the user profile already exists
         // TODO: REFACTOR!
         // It'a adding the user profile logic
-        const { error: fetchError, data: userProfile } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", user.id)
-          .single();
+        const { error: fetchError, data: userProfile } = await getUserProfile(
+          user.id
+        );
 
         if (userProfile) {
           setUserProfile(userProfile);
@@ -117,9 +112,10 @@ export function Auth() {
             favourite_cuisine: "",
             dietary_preferences: [],
           };
-          const { error: insertError } = await supabase
-            .from("users")
-            .insert([newlyCreatedInitialProfile]);
+
+          const { error: insertError } = await addNewUserProfile(
+            newlyCreatedInitialProfile
+          );
 
           if (insertError) {
             console.error("Error profile creation:", insertError);

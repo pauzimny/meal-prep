@@ -8,9 +8,9 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Pencil, Plus } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../lib/supabase/client";
 import { useAuth } from "../lib/auth-context";
-import type { Tables } from "../lib/supabase";
+import type { Tables } from "../lib/supabase/client";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
 

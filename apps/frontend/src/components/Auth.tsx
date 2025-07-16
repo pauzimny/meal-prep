@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../lib/supabase/client";
 import {
   Card,
   CardContent,
@@ -12,6 +12,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useUserStore } from "../stores/userStore";
 import { type UserProfileSchema } from "@meal-prep/contracts";
+import { signIn, signUp } from "../lib/supabase/auth";
 
 export function Auth() {
   const [loading, setLoading] = useState(false);
@@ -40,14 +41,10 @@ export function Auth() {
     setMessage(null);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await signUp({
         email,
         password,
-        options: {
-          data: {
-            name: name,
-          },
-        },
+        name,
       });
 
       if (authError) {
@@ -82,7 +79,7 @@ export function Auth() {
     setMessage(null);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await signIn({
         email,
         password,
       });

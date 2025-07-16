@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { OpenAI } from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 import {
-  receipeResponseSchema,
-  receipeOpenAISchema,
-  type ReceipeResponseSchema,
+  recipeResponseSchema,
+  recipeOpenAISchema,
+  type RecipeResponseSchema,
 } from '@meal-prep/contracts';
 
 @Injectable()
@@ -18,9 +18,9 @@ export class OpenAIService {
     });
   }
 
-  async askQuestion(prompt: string): Promise<ReceipeResponseSchema> {
-    console.log('receipeResponseSchema', receipeResponseSchema);
-    console.log('receipeOpenAISchema', receipeOpenAISchema);
+  async askQuestion(prompt: string): Promise<RecipeResponseSchema> {
+    console.log('recipeResponseSchema', recipeResponseSchema);
+    console.log('recipeOpenAISchema', recipeOpenAISchema);
     const response = await this.openai.responses.parse({
       model: 'gpt-4o-mini',
       input: [
@@ -45,21 +45,21 @@ export class OpenAIService {
         { role: 'user', content: prompt },
       ],
       text: {
-        format: zodTextFormat(receipeResponseSchema, 'mealReceipe'),
+        format: zodTextFormat(recipeResponseSchema, 'mealRecipe'),
       },
     });
 
-    const mealReceipe = response;
+    const mealRecipe = response;
 
-    console.log('mealreceipe', mealReceipe);
-    console.log('mealreceipe_instructions', mealReceipe.instructions);
-    console.log('mealreceipe_parsed', mealReceipe.output_parsed);
+    console.log('mealrecipe', mealRecipe);
+    console.log('mealrecipe_instructions', mealRecipe.instructions);
+    console.log('mealrecipe_parsed', mealRecipe.output_parsed);
 
     return (
-      mealReceipe.output_parsed || {
+      mealRecipe.output_parsed || {
         title: '',
-        description: null,
-        ingredients: null,
+        description: undefined,
+        ingredients: undefined,
         bullets: [],
       }
     );

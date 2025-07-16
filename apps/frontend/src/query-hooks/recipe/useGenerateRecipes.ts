@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-export const useGenerateReceipe = () => {
+export const useGenerateRecipe = () => {
   return useMutation({
     mutationFn: async (prompt: string) => {
       // TODO: ENVS!

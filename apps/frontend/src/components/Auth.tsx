@@ -10,6 +10,8 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useUserStore } from "../stores/userStore";
+import { type UserProfileSchema } from "@meal-prep/contracts";
 
 export function Auth() {
   const [loading, setLoading] = useState(false);
@@ -19,6 +21,8 @@ export function Auth() {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [isSignUp, setIsSignUp] = useState(true);
+
+  const setUserProfile = useUserStore((state) => state.setUser);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,27 +97,34 @@ export function Auth() {
 
         // check whether the user profile already exists
         // TODO: REFACTOR!
-        const { error: fetchError } = await supabase
+        // It'a adding the user profile logic
+        const { error: fetchError, data: userProfile } = await supabase
           .from("users")
-          .select("id")
+          .select("*")
           .eq("id", user.id)
           .single();
 
+        if (userProfile) {
+          setUserProfile(userProfile);
+        }
+
         if (fetchError && fetchError.code === "PGRST116") {
-          const { error: insertError } = await supabase.from("users").insert([
-            {
-              id: user.id,
-              email: user.email,
-              name: user.user_metadata.name ?? "",
-              meal_count: 0,
-              favorite_cuisine: "",
-              dietary_preferences: [],
-            },
-          ]);
+          const newlyCreatedInitialProfile: UserProfileSchema = {
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata.name ?? "",
+            meal_count: 0,
+            favourite_cuisine: "",
+            dietary_preferences: [],
+          };
+          const { error: insertError } = await supabase
+            .from("users")
+            .insert([newlyCreatedInitialProfile]);
 
           if (insertError) {
             console.error("Error profile creation:", insertError);
           } else {
+            setUserProfile(newlyCreatedInitialProfile);
             console.log("The new user profile has been created.");
           }
         } else {

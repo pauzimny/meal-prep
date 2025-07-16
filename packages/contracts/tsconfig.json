@@ -1,9 +1,16 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "esnext",
     "outDir": "dist",
+    "target": "ES2020",
     "rootDir": ".",
-    "lib": ["ES2020", "DOM"]
+    "lib": ["ES2020", "DOM"],
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "emitDeclarationOnly": false
   },
   "include": ["./**/*.ts"],
   "exclude": ["../../apps", "node_modules", "dist"]

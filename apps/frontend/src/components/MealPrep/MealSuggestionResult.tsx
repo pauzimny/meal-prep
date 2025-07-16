@@ -26,7 +26,7 @@ export const MealSuggestionResult = ({
       <ul className="list-disc list-inside space-y-2">
         {bullets.map((bullet) => (
           <li
-            key={`${bullet}-receipe`}
+            key={`${bullet}-recipe`}
             className="bg-primary/10 rounded px-3 py-2 text-primary-dark shadow-sm"
           >
             {bullet}

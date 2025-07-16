@@ -40,7 +40,8 @@ export class OpenAIService {
             "bullets":["Cook pasta according to package instructions; drain and set aside.", "In a large skillet, heat olive oil over medium-high heat."]
           }
           
-          Remember to introduce additional ingredients only when necessary.`,
+          Remember to introduce additional ingredients only when necessary.
+          You have to respect user's dietary preferences if set. Be strict if user has eg. vegetarian preferences and adds some of non-vegetarian ingredients. In this case add explicit "caution" comment before title content that recipe doesn't fit to dietary preferences criteria.`,
         },
         { role: 'user', content: prompt },
       ],

@@ -53,7 +53,11 @@ export function MealPrep() {
     console.log("Ingredients:", ingredients);
     console.log("Meal Type:", mealType);
 
-    const prompt = generatePrompt(ingredients, mealType);
+    const prompt = generatePrompt({
+      ingredients,
+      mealType,
+      dietaryPreferences: userProfile.dietary_preferences,
+    });
     mutate(prompt);
   };
 

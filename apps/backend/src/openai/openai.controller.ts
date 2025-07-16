@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { OpenAIService } from './openai.service';
-import { ReceipeResponseSchema } from '@meal-prep/contracts';
+import { type RecipeResponseSchema } from '@meal-prep/contracts';
 
 @Controller('openai')
 export class OpenAIController {
@@ -19,7 +19,7 @@ export class OpenAIController {
     }
 
     try {
-      const result: ReceipeResponseSchema | null =
+      const result: RecipeResponseSchema | null =
         await this.openaiService.askQuestion(prompt);
       if (!result) {
         throw new HttpException(

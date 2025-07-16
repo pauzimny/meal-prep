@@ -3,12 +3,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { QuantitySelector } from "../QuantitySelector";
 import { IngredientsList } from "./IngredientsList";
-import { useGenerateReceipe } from "../../query-hooks/receipe";
+import { useGenerateRecipe } from "../../query-hooks/recipe";
 import { type Ingredient } from "./types";
 import { generatePrompt } from "./helpers";
 import { MealSuggestionResult } from "./MealSuggestionResult";
 import { Loader } from "lucide-react";
 import { SelectMealType } from "./SelectMealType";
+import { useUserStore } from "../../stores/userStore";
 
 const initialIngredient = {
   name: "",
@@ -22,9 +23,12 @@ export function MealPrep() {
     useState<Ingredient>(initialIngredient);
   const [mealType, setMealType] = useState<string>("");
 
-  const { mutate, error, isPending, data } = useGenerateReceipe();
+  const { mutate, error, isPending, data } = useGenerateRecipe();
+
+  const userProfile = useUserStore((state) => state.user);
 
   console.log("meal suggestions:", data);
+  console.log("userProfile", userProfile);
 
   const handleAddIngredient = () => {
     if (newIngredient.name && newIngredient.quantity > 0) {

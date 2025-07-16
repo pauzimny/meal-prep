@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase/client";
 import { redirect } from "@tanstack/react-router";
+import { signOut } from "./supabase/auth";
 
 interface AuthContextType {
   user: User | null;
@@ -42,9 +43,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const signOut = async () => {
+  const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
+      const { error } = await signOut();
       if (error) {
         console.error("Error signing out:", error);
         throw error;
@@ -60,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = {
     user,
     loading,
-    signOut,
+    signOut: handleSignOut,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

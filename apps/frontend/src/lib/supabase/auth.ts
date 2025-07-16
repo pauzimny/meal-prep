@@ -31,3 +31,7 @@ export const signIn = async (credentials: BaseCredentials) => {
     password,
   });
 };
+
+export const signOut = async () => {
+  return await supabase.auth.signOut();
+};

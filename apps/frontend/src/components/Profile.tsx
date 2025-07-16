@@ -8,11 +8,14 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Pencil, Plus } from "lucide-react";
-import { supabase } from "../lib/supabase/client";
 import { useAuth } from "../lib/auth-context";
 import type { Tables } from "../lib/supabase/client";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
+import {
+  getUserProfile,
+  updateUserDietaryPreferences,
+} from "../lib/supabase/user";
 
 export type UserProfile = Tables["users"];
 
@@ -35,11 +38,7 @@ export function Profile() {
 
     async function fetchProfile() {
       try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", authenticatedUser?.id)
-          .single();
+        const { data, error } = await getUserProfile(authenticatedUser.id);
 
         if (error) throw error;
         if (mounted) {
@@ -86,11 +85,11 @@ export function Profile() {
     if (!newPreference.trim()) return;
     const updatedPreferences = [...dietaryPreferences, newPreference.trim()];
     setSaving(true);
-    const { error } = await supabase
-      .from("users")
-      .update({ dietary_preferences: updatedPreferences })
-      .eq("id", user?.id)
-      .select();
+
+    const { error } = await updateUserDietaryPreferences({
+      dietaryPreferences: updatedPreferences,
+      userId: user.id,
+    });
     setSaving(false);
     if (!error) {
       setDietaryPreferences(updatedPreferences);

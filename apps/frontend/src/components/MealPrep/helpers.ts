@@ -12,13 +12,20 @@ export const formatIngredientsForPrompt = (
   return `\n${formatted}`;
 };
 
-export const generatePrompt = (
-  ingredients: Ingredient[],
-  mealType: string
-): string => {
+export const generatePrompt = ({
+  ingredients,
+  mealType,
+  dietaryPreferences = [],
+}: {
+  ingredients: Ingredient[];
+  mealType: string;
+  dietaryPreferences: string[];
+}): string => {
   const baseText = `Generate meal suggestions for given ingredients: ${formatIngredientsForPrompt(
     ingredients
-  )}. It should be ${mealType}.The output should be returned according to given JSON schema: ingredients list, title, description and bullets (as recipe steps).`;
+  )}. It should be ${mealType}.My dietary preferences are: ${dietaryPreferences.join(
+    ","
+  )}.The output should be returned according to given JSON schema: ingredients list, title, description and bullets (as recipe steps).`;
 
   return baseText;
 };

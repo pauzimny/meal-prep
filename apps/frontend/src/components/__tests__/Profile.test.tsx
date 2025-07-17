@@ -18,15 +18,7 @@ vi.mock("@/lib/supabase", () => ({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
           single: vi.fn().mockResolvedValue({
-            data: {
-              id: "123",
-              name: "Test User",
-              email: "test@example.com",
-              avatar_url: null,
-              meal_count: 5,
-              favorite_cuisine: "Italian",
-              dietary_preferences: ["Vegetarian", "Gluten-Free"],
-            },
+            data: testUserProfile,
             error: null,
           }),
         })),
@@ -69,6 +61,7 @@ describe("Profile", () => {
   });
 
   it("Shows loading state initially", () => {
+    useUserStore.setState({ user: null, isLoading: true });
     render(<Profile />);
 
     expect(screen.getByText("Loading profile...")).toBeInTheDocument();

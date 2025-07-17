@@ -4,7 +4,7 @@ import { type User } from "@supabase/supabase-js";
 export const testUserProfile: UserProfileSchema = {
   name: "Test User",
   email: "test@example.com",
-  meal_count: 0,
+  meal_count: 5,
   favourite_cuisine: "Italian",
   dietary_preferences: ["Vegetarian", "Gluten-Free"],
 };

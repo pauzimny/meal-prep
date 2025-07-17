@@ -11,23 +11,19 @@ import { Pencil, Plus } from "lucide-react";
 import type { Tables } from "../lib/supabase/client";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
-import {
-  getUserProfile,
-  updateUserDietaryPreferences,
-} from "../lib/supabase/user";
+import { updateUserDietaryPreferences } from "../lib/supabase/user";
 import { useAuthStore } from "../stores/authStore";
+import { useUserStore } from "../stores/userStore";
 
 export type UserProfile = Tables["users"];
 
 export function Profile() {
-  const authUser = useAuthStore((state) => state.user);
   const signOut = useAuthStore((state) => state.signOut);
-  // const { signOut, user: authenticatedUser } = useAuth();
-  const navigate = useNavigate();
+  const userProfile = useUserStore((state) => state.user);
+  const isLoading = useUserStore((state) => state.isLoading);
+  const error = useUserStore((state) => state.error);
+  const setUserProfile = useUserStore((state) => state.setUser);
 
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isEditingDietaryPreferences, setIsEditingDietaryPreferences] =
     useState(false);
   const [newPreference, setNewPreference] = useState("");
@@ -35,40 +31,13 @@ export function Profile() {
   const [saving, setSaving] = useState(false);
   const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
 
-  useEffect(() => {
-    let mounted = true;
-
-    async function fetchProfile() {
-      try {
-        const { data, error } = await getUserProfile(authUser.id);
-
-        if (error) throw error;
-        if (mounted) {
-          setUser(data);
-        }
-      } catch (err) {
-        if (mounted) {
-          setError(err instanceof Error ? err.message : "An error occurred");
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchProfile();
-
-    return () => {
-      mounted = false;
-    };
-  }, [authUser?.id]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      setDietaryPreferences(user.dietary_preferences);
+    if (userProfile) {
+      setDietaryPreferences(userProfile.dietary_preferences);
     }
-  }, [user]);
+  }, [userProfile]);
 
   const handleSignOut = async () => {
     try {
@@ -90,14 +59,15 @@ export function Profile() {
 
     const { error } = await updateUserDietaryPreferences({
       dietaryPreferences: updatedPreferences,
-      userId: user.id,
+      userId: userProfile.id,
     });
     setSaving(false);
     if (!error) {
       setDietaryPreferences(updatedPreferences);
-      setUser(
-        (prev) => prev && { ...prev, dietary_preferences: updatedPreferences }
-      );
+      setUserProfile({
+        ...userProfile,
+        dietary_preferences: updatedPreferences,
+      });
       setNewPreference("");
       setShowAddInput(false);
     } else {
@@ -105,7 +75,7 @@ export function Profile() {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading profile...</div>;
   }
 
@@ -113,13 +83,14 @@ export function Profile() {
     return <div>Error: {error}</div>;
   }
 
-  if (!user) {
+  if (!userProfile) {
     return <div>No profile found</div>;
   }
 
-  const isUserDietaryPreferencesEmpty = user.dietary_preferences.length === 0;
+  const isUserDietaryPreferencesEmpty =
+    userProfile.dietary_preferences.length === 0;
 
-  const initials = user.name
+  const initials = userProfile.name
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -137,12 +108,17 @@ export function Profile() {
         <CardContent>
           <div className="flex items-center space-x-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={user.avatar_url || undefined} alt={user.name} />
+              <AvatarImage
+                src={userProfile.avatar_url || undefined}
+                alt={userProfile.name}
+              />
               <AvatarFallback className="text-lg">{initials}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <h2 className="text-2xl font-bold">{user.name}</h2>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
+              <h2 className="text-2xl font-bold">{userProfile.name}</h2>
+              <p className="text-sm text-muted-foreground">
+                {userProfile.email}
+              </p>
             </div>
           </div>
         </CardContent>
@@ -158,13 +134,15 @@ export function Profile() {
               <p className="text-sm font-medium text-muted-foreground">
                 Total Meals
               </p>
-              <p className="text-2xl font-bold">{user.meal_count}</p>
+              <p className="text-2xl font-bold">{userProfile.meal_count}</p>
             </div>
             <div className="space-y-2">
               <p className="text-sm font-medium text-muted-foreground">
                 Favorite Cuisine
               </p>
-              <p className="text-2xl font-bold">{user.favorite_cuisine}</p>
+              <p className="text-2xl font-bold">
+                {userProfile.favourite_cuisine}
+              </p>
             </div>
           </div>
         </CardContent>
@@ -252,7 +230,7 @@ export function Profile() {
             <div className="flex flex-wrap gap-2">
               {isUserDietaryPreferencesEmpty
                 ? "N/A"
-                : user.dietary_preferences.map((preference) => (
+                : userProfile.dietary_preferences.map((preference) => (
                     <span
                       key={preference}
                       className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"

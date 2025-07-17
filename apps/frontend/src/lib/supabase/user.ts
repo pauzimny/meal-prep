@@ -1,4 +1,4 @@
-import { UserProfileSchema } from "@meal-prep/contracts";
+import { type UserProfileSchema } from "@meal-prep/contracts";
 import { supabase } from "./client";
 
 export const getUserProfile = async (userId: string) => {

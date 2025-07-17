@@ -4,12 +4,12 @@ import {
   Link,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { useAuth } from "../lib/auth-context";
 import { Heading } from "../components/Heading";
 import { type AppRouterContext } from "../lib/types";
+import { useAuthStore } from "../stores/authStore";
 
 function RootComponent() {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   return (
     <div className="w-full min-h-[100vh] flex flex-col">
       {!!user && (

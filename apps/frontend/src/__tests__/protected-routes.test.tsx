@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
 import { useNavigate } from "@tanstack/react-router";
-import { AuthProvider, useAuth } from "@/lib/auth-context";
+import { useAuthStore } from "../stores/authStore";
 
 // *** Mock the router
 vi.mock("@tanstack/react-router", () => ({
@@ -24,7 +24,7 @@ vi.mock("@/lib/supabase", () => ({
 }));
 
 function TestComponent() {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
 
   if (!user) {
@@ -46,11 +46,7 @@ describe("Protected Routes", () => {
   });
 
   it("Redirects to /auth when accessing protected route as anonymous", async () => {
-    render(
-      <AuthProvider>
-        <TestComponent />
-      </AuthProvider>
-    );
+    render(<TestComponent />);
 
     await vi.waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith({ to: "/auth" });

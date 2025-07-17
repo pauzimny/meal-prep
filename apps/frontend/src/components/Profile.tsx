@@ -8,7 +8,6 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Pencil, Plus } from "lucide-react";
-import { useAuth } from "../lib/auth-context";
 import type { Tables } from "../lib/supabase/client";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
@@ -16,11 +15,14 @@ import {
   getUserProfile,
   updateUserDietaryPreferences,
 } from "../lib/supabase/user";
+import { useAuthStore } from "../stores/authStore";
 
 export type UserProfile = Tables["users"];
 
 export function Profile() {
-  const { signOut, user: authenticatedUser } = useAuth();
+  const authUser = useAuthStore((state) => state.user);
+  const signOut = useAuthStore((state) => state.signOut);
+  // const { signOut, user: authenticatedUser } = useAuth();
   const navigate = useNavigate();
 
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -38,7 +40,7 @@ export function Profile() {
 
     async function fetchProfile() {
       try {
-        const { data, error } = await getUserProfile(authenticatedUser.id);
+        const { data, error } = await getUserProfile(authUser.id);
 
         if (error) throw error;
         if (mounted) {
@@ -60,7 +62,7 @@ export function Profile() {
     return () => {
       mounted = false;
     };
-  }, [authenticatedUser?.id]);
+  }, [authUser?.id]);
 
   useEffect(() => {
     if (user) {

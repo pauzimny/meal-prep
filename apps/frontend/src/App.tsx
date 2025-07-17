@@ -1,7 +1,8 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
-import { AuthProvider, useAuth } from "./lib/auth-context";
+import { useAuthStore } from "./stores/authStore";
+import { useAuthListener } from "./components/Auth/useAuthListener";
 
 const router = createRouter({
   context: undefined,
@@ -17,22 +18,24 @@ declare module "@tanstack/react-router" {
 }
 
 function AppContent() {
-  const { user, loading } = useAuth();
+  const isLoading = useAuthStore((state) => state.loading);
+  const authUser = useAuthStore((state) => state.user);
 
-  if (loading) {
+  useAuthListener();
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  return <RouterProvider router={router} context={{ user }} />;
+  return <RouterProvider router={router} context={{ user: authUser }} />;
 }
 
 export default function App() {
   const queryClient = new QueryClient();
+
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <AppContent />
     </QueryClientProvider>
   );
 }

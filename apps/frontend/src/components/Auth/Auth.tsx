@@ -5,14 +5,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { useUserStore } from "../stores/userStore";
+} from "../ui/card";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { useUserStore } from "../../stores/userStore";
 import { type UserProfileSchema } from "@meal-prep/contracts";
-import { signIn, signUp } from "../lib/supabase/auth";
-import { addNewUserProfile, getUserProfile } from "../lib/supabase/user";
+import { signIn, signUp } from "../../lib/supabase/auth";
+import { addNewUserProfile, getUserProfile } from "../../lib/supabase/user";
 
 export function Auth() {
   const [loading, setLoading] = useState(false);

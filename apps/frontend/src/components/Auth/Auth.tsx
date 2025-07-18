@@ -204,10 +204,16 @@ export function Auth() {
             )}
 
             <div className="flex flex-col gap-4">
-              <Button type="submit" disabled={loading} className="w-full">
+              <Button
+                id="submit-auth-button"
+                type="submit"
+                disabled={loading}
+                className="w-full"
+              >
                 {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
               </Button>
               <Button
+                id="choose-auth-option"
                 type="button"
                 variant="ghost"
                 onClick={() => {

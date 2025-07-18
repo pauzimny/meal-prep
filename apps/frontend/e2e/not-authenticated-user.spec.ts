@@ -7,5 +7,6 @@ test.describe("Not authenticated user", () => {
 
   test("is redirected to auth page", async ({ page }) => {
     await expect(page).toHaveURL(/\/auth/);
+    await expect(page.getByText("Welcome to Meal Prep")).toBeVisible();
   });
 });

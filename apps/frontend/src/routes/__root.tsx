@@ -1,12 +1,9 @@
-import {
-  Outlet,
-  createRootRouteWithContext,
-  Link,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Heading } from "../components/Heading";
 import { type AppRouterContext } from "../lib/types";
 import { useAuthStore } from "../stores/authStore";
+import { NavLink } from "../components/NavLink";
 
 function RootComponent() {
   const user = useAuthStore((state) => state.user);
@@ -16,10 +13,10 @@ function RootComponent() {
         <div className="sticky top-0 z-10">
           <Heading />
           <div className="py-4 px-6 flex gap-6 bg-white">
-            <Link to="/" activeProps={{}} activeOptions={{ exact: true }}>
+            <NavLink to="/" activeProps={{}} activeOptions={{ exact: true }}>
               Home
-            </Link>
-            <Link to="/profile">Profile</Link>
+            </NavLink>
+            <NavLink to="/profile">Profile</NavLink>
           </div>
         </div>
       )}

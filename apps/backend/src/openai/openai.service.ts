@@ -59,8 +59,8 @@ export class OpenAIService {
     return (
       mealRecipe.output_parsed || {
         title: '',
-        description: undefined,
-        ingredients: undefined,
+        description: null,
+        ingredients: null,
         bullets: [],
       }
     );

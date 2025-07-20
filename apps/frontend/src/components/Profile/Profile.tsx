@@ -27,7 +27,7 @@ export function Profile() {
     onSuccess: (_, variables) => {
       setDietaryPreferences(variables.dietaryPreferences);
       setUserProfile({
-        ...userProfile,
+        ...userProfile!,
         dietary_preferences: variables.dietaryPreferences,
       });
       setNewPreference("");

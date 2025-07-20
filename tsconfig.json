@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "@meal-prep/contracts": ["packages/contracts/*"]

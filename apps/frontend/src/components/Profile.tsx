@@ -8,14 +8,11 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Pencil, Plus } from "lucide-react";
-import type { Tables } from "../lib/supabase/client";
 import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "./ui/icon-button";
-import { updateUserDietaryPreferences } from "../lib/supabase/user";
 import { useAuthStore } from "../stores/authStore";
 import { useUserStore } from "../stores/userStore";
-
-export type UserProfile = Tables["users"];
+import { useUpdateUserDietaryPreferencesMutation } from "../query-hooks/user/useUserProfile";
 
 export function Profile() {
   const signOut = useAuthStore((state) => state.signOut);
@@ -31,13 +28,25 @@ export function Profile() {
   const [saving, setSaving] = useState(false);
   const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
 
-  const navigate = useNavigate();
+  const { mutate } = useUpdateUserDietaryPreferencesMutation({
+    onSuccess: (_, variables) => {
+      setDietaryPreferences(variables.dietaryPreferences);
+      setUserProfile({
+        ...userProfile,
+        dietary_preferences: variables.dietaryPreferences,
+      });
+      setNewPreference("");
+      setShowAddInput(false);
+      setSaving(false);
+    },
+    onError: (error) => {
+      console.error("error:", error.message);
+      setSaving(false);
+      alert("Failed to update dietary preferences");
+    },
+  });
 
-  useEffect(() => {
-    if (userProfile) {
-      setDietaryPreferences(userProfile.dietary_preferences);
-    }
-  }, [userProfile]);
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
@@ -53,27 +62,21 @@ export function Profile() {
   };
 
   const handleAddPreference = async () => {
-    if (!newPreference.trim()) return;
+    if (!newPreference.trim() || !userProfile) return;
     const updatedPreferences = [...dietaryPreferences, newPreference.trim()];
     setSaving(true);
 
-    const { error } = await updateUserDietaryPreferences({
+    mutate({
       dietaryPreferences: updatedPreferences,
-      userId: userProfile.id,
+      userId: userProfile.id!,
     });
-    setSaving(false);
-    if (!error) {
-      setDietaryPreferences(updatedPreferences);
-      setUserProfile({
-        ...userProfile,
-        dietary_preferences: updatedPreferences,
-      });
-      setNewPreference("");
-      setShowAddInput(false);
-    } else {
-      alert("Failed to update dietary preferences");
-    }
   };
+
+  useEffect(() => {
+    if (userProfile) {
+      setDietaryPreferences(userProfile.dietary_preferences || []);
+    }
+  }, [userProfile]);
 
   if (isLoading) {
     return <div>Loading profile...</div>;
@@ -88,13 +91,15 @@ export function Profile() {
   }
 
   const isUserDietaryPreferencesEmpty =
-    userProfile.dietary_preferences.length === 0;
+    userProfile && userProfile?.dietary_preferences?.length === 0;
 
-  const initials = userProfile.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
+  const initials = userProfile?.name
+    ? userProfile.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : undefined;
 
   return (
     <div className="space-y-6 p-6">
@@ -230,7 +235,7 @@ export function Profile() {
             <div className="flex flex-wrap gap-2">
               {isUserDietaryPreferencesEmpty
                 ? "N/A"
-                : userProfile.dietary_preferences.map((preference) => (
+                : userProfile?.dietary_preferences?.map((preference) => (
                     <span
                       key={preference}
                       className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"

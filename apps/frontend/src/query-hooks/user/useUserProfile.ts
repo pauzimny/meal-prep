@@ -7,7 +7,7 @@ import {
   getUserProfile,
   updateUserDietaryPreferences,
 } from "../../lib/supabase/user";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import { type PostgrestSingleResponse } from "@supabase/supabase-js";
 
 export type UpdateUserDietaryPreferencesDTO = {
   userId: string;
@@ -30,12 +30,12 @@ export const useUpdateUserDietaryPreferencesMutation = ({
   onSuccess,
   onError,
 }: UseMutationOptions<
-  PostgrestSingleResponse<UpdateUserDietaryPreferencesDTO[]>,
+  PostgrestSingleResponse<null>,
   Error,
   UpdateUserDietaryPreferencesDTO
 >) =>
   useMutation<
-    PostgrestSingleResponse<UpdateUserDietaryPreferencesDTO[]>,
+    PostgrestSingleResponse<null>,
     Error,
     UpdateUserDietaryPreferencesDTO
   >({

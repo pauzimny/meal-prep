@@ -1,12 +1,11 @@
-import type { UserProfile } from "@/components/Profile";
+import { UserProfileSchema } from "@meal-prep/contracts";
 
-export const mockedUser: UserProfile = {
+export const mockedUser: UserProfileSchema = {
   id: "1234",
-  created_at: "29-08-1979",
   name: "John Smith",
   email: "john@email.me.com",
   meal_count: 2,
-  favorite_cuisine: "Spaghetti",
+  favourite_cuisine: "Spaghetti",
   dietary_preferences: ["low carb", "gluten free"],
   avatar_url: "",
 };

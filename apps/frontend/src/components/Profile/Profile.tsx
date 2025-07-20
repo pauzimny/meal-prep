@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
 import { Pencil, Plus } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import { IconButton } from "./ui/icon-button";
-import { useAuthStore } from "../stores/authStore";
-import { useUserStore } from "../stores/userStore";
-import { useUpdateUserDietaryPreferencesMutation } from "../query-hooks/user/useUserProfile";
+import { IconButton } from "../ui/icon-button";
+import { useAuthStore } from "../../stores/authStore";
+import { useUserStore } from "../../stores/userStore";
+import { useUpdateUserDietaryPreferencesMutation } from "../../query-hooks/user/useUserProfile";
 
 export function Profile() {
   const signOut = useAuthStore((state) => state.signOut);

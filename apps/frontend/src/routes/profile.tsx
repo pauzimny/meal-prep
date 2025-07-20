@@ -1,5 +1,5 @@
-import { Profile } from "@/components/Profile";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Profile } from "../components/Profile/Profile";
 
 function ProfileRoute() {
   return <Profile />;

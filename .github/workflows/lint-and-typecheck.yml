@@ -1,0 +1,33 @@
+name: Lint & Typecheck
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Lint all packages
+        run: pnpm run lint
+
+      - name: Typecheck all packages
+        run: pnpm tsc -b --pretty

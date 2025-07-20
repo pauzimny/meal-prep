@@ -1,5 +1,14 @@
 {
+  "files": [],
+  "references": [
+    { "path": "packages/contracts" },
+    { "path": "apps/frontend" },
+    { "path": "apps/backend" }
+  ],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
     "jsx": "react-jsx",
     "strictNullChecks": true,
     "baseUrl": ".",

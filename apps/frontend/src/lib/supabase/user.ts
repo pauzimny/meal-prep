@@ -3,7 +3,9 @@ import { supabase } from "./client";
 import { type UpdateUserDietaryPreferencesDTO } from "../../query-hooks/user/useUserProfile";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
 
-export const getUserProfile = async (userId: string) => {
+export const getUserProfile = async (
+  userId: string
+): Promise<PostgrestSingleResponse<UserProfileSchema>> => {
   return await supabase.from("users").select("*").eq("id", userId).single();
 };
 

@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { OpenAIService } from './openai.service';
-import { type RecipeResponseSchema } from '@meal-prep/contracts';
 
 @Controller('openai')
 export class OpenAIController {
@@ -19,14 +18,14 @@ export class OpenAIController {
     }
 
     try {
-      const result: RecipeResponseSchema | null =
-        await this.openaiService.askQuestion(prompt);
+      const result = await this.openaiService.askQuestion(prompt);
       if (!result) {
         throw new HttpException(
           'No valid response from OpenAI',
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
+
       return result;
     } catch (error: any) {
       console.error('Error querying OpenAI:', error);

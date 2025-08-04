@@ -1,8 +1,10 @@
-import { useUserStore } from "../stores/userStore";
+interface HeadingProps {
+  email: string;
+  name?: string;
+}
 
-export function Heading() {
-  const user = useUserStore((state) => state.user);
-  const greeting = user ? `Hello ${user.name || user.email}` : null;
+export function Heading({ email, name }: HeadingProps) {
+  const greeting = `Hello ${name || email}`;
 
   return (
     <div className="relative w-full h-[var(--header-height)] overflow-hidden">

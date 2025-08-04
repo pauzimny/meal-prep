@@ -20,6 +20,7 @@ function RootComponent() {
             <NavLink to="/" activeProps={{}} activeOptions={{ exact: true }}>
               Home
             </NavLink>
+            <NavLink to="/saved-meals">Saved meals</NavLink>
             <NavLink to="/profile">Profile</NavLink>
           </div>
         </div>

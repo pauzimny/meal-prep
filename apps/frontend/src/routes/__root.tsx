@@ -1,4 +1,8 @@
-import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import {
+  ErrorComponent,
+  Outlet,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Heading } from "../components/Heading";
 import { type AppRouterContext } from "../lib/types";
@@ -31,4 +35,5 @@ function RootComponent() {
 export const Route = createRootRouteWithContext<AppRouterContext>()({
   component: RootComponent,
   notFoundComponent: () => <div>404 Not Found</div>,
+  errorComponent: ErrorComponent,
 });

@@ -106,11 +106,13 @@ export function Auth() {
         if (fetchError && fetchError.code === "PGRST116") {
           const newlyCreatedInitialProfile: UserProfileSchema = {
             id: user.id,
-            email: user.email,
+            email: user.email || "",
             name: user.user_metadata.name ?? "",
             meal_count: 0,
             favourite_cuisine: "",
             dietary_preferences: [],
+            avatar_url: null,
+            created_at: new Date().toISOString(),
           };
 
           const { error: insertError } = await addNewUserProfile(

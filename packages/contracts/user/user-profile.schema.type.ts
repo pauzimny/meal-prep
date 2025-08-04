@@ -3,7 +3,7 @@ import { z } from "zod";
 // TODO: REPLACE WITH AUTO-GENERATED FROM SUPABASE
 export const userProfileSchema = z.object({
   id: z.string().uuid(),
-  created_ad: z.string(),
+  created_at: z.string(),
   name: z.string(),
   email: z.string(),
   avatar_url: z.string().nullable(),

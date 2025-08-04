@@ -7,13 +7,16 @@ import { useNavigate } from "@tanstack/react-router";
 import { IconButton } from "../ui/icon-button";
 import { useAuthStore } from "../../stores/authStore";
 import { useUserStore } from "../../stores/userStore";
-import { useUpdateUserDietaryPreferencesMutation } from "../../query-hooks/user/useUserProfile";
+import {
+  useGetUserProfile,
+  useUpdateUserDietaryPreferencesMutation,
+} from "../../query-hooks/user/useUserProfile";
 
 export function Profile() {
   const signOut = useAuthStore((state) => state.signOut);
+
   const userProfile = useUserStore((state) => state.user);
-  const isLoading = useUserStore((state) => state.isLoading);
-  const error = useUserStore((state) => state.error);
+  const userId = useAuthStore((state) => state.user?.id);
   const setUserProfile = useUserStore((state) => state.setUser);
 
   const [isEditingDietaryPreferences, setIsEditingDietaryPreferences] =
@@ -22,6 +25,8 @@ export function Profile() {
   const [showAddInput, setShowAddInput] = useState(false);
   const [saving, setSaving] = useState(false);
   const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
+
+  const { isLoading, error } = useGetUserProfile(userId);
 
   const { mutate } = useUpdateUserDietaryPreferencesMutation({
     onSuccess: (_, variables) => {
@@ -78,7 +83,7 @@ export function Profile() {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
   if (!userProfile) {

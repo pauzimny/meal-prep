@@ -8,21 +8,23 @@ import {
   updateUserDietaryPreferences,
 } from "../../lib/supabase/user";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
+import { UserProfileSchema } from "@meal-prep/contracts";
 
 export type UpdateUserDietaryPreferencesDTO = {
   userId: string;
   dietaryPreferences: string[];
 };
 
-export const useGetUserProfile = (id: string) => {
-  return useQuery({
+export const useGetUserProfile = (id: string | undefined) => {
+  return useQuery<UserProfileSchema>({
     queryKey: ["user-profile", id],
-    queryFn: async () => {
-      const { data, error } = await getUserProfile(id);
+    queryFn: async (): Promise<UserProfileSchema> => {
+      const { data, error } = await getUserProfile(id!);
 
       if (error) throw error;
       return data;
     },
+    enabled: !!id,
   });
 };
 

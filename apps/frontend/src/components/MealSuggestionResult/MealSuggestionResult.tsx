@@ -1,12 +1,12 @@
+import { type RecipeResponseSchema } from "@meal-prep/contracts";
 import { Card } from "../ui/card";
-import { type MealSuggestionResultProps } from "./types";
 
 export const MealSuggestionResult = ({
   title,
   description,
   bullets,
   ingredients,
-}: MealSuggestionResultProps) => {
+}: RecipeResponseSchema) => {
   return (
     <Card className="p-6 my-6 max-w-4xl mx-auto">
       <h4 className="text-2xl font-bold text-primary mb-2 ">{title}</h4>

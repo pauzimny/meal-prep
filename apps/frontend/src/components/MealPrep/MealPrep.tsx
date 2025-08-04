@@ -6,7 +6,7 @@ import { IngredientsList } from "./IngredientsList";
 import { useGenerateRecipe } from "../../query-hooks/recipe";
 import { type Ingredient } from "./types";
 import { generatePrompt } from "./helpers";
-import { MealSuggestionResult } from "./MealSuggestionResult";
+import { MealSuggestionResult } from "../MealSuggestionResult/MealSuggestionResult";
 import { Loader } from "lucide-react";
 import { SelectMealType } from "./SelectMealType";
 import { useUserStore } from "../../stores/userStore";
@@ -56,7 +56,7 @@ export function MealPrep() {
     const prompt = generatePrompt({
       ingredients,
       mealType,
-      dietaryPreferences: userProfile.dietary_preferences,
+      dietaryPreferences: userProfile?.dietary_preferences || [],
     });
     mutate(prompt);
   };

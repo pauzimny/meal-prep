@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { recipeResponseSchema } from "../recipe/recipe-answer.schema.type.js";
 
 // TODO: REPLACE WITH AUTO-GENERATED FROM SUPABASE
 export const userProfileSchema = z.object({
@@ -10,6 +11,7 @@ export const userProfileSchema = z.object({
   meal_count: z.number(),
   favourite_cuisine: z.string(),
   dietary_preferences: z.array(z.string()),
+  saved_meals: z.array(recipeResponseSchema),
 });
 
 export type UserProfileSchema = z.infer<typeof userProfileSchema>;

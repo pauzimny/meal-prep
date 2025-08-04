@@ -3,8 +3,8 @@
   "compilerOptions": {
     "module": "esnext",
     "outDir": "dist",
+    "rootDir": "src",
     "target": "ES2020",
-    "rootDir": ".",
     "lib": ["ES2020", "DOM"],
     "moduleResolution": "bundler",
     "declaration": true,
@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "emitDeclarationOnly": false
   },
-  "include": ["./**/*.ts"],
+  "include": ["src"],
   "exclude": ["../../apps", "node_modules", "dist"]
 }

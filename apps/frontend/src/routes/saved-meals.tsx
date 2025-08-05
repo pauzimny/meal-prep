@@ -3,7 +3,7 @@ import { SavedMeals } from "../components/SavedMeals/SavedMeals";
 
 export const Route = createFileRoute("/saved-meals")({
   component: SavedMeals,
-  beforeLoad: async ({ context }) => {
+  beforeLoad: ({ context }) => {
     if (!context.user) {
       throw redirect({ to: "/auth" });
     }

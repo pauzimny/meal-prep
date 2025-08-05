@@ -9,6 +9,8 @@
     "strict": true
   },
   "extends": "./tsconfig.app.json",
+  "include": ["src/**/*"],
+  "exclude": ["e2e/**/*"],
   "files": [],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

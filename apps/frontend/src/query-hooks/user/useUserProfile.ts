@@ -6,14 +6,23 @@ import {
 import {
   getUserProfile,
   updateUserDietaryPreferences,
+  updateUserSavedMealsList,
 } from "../../lib/supabase/user";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
-import { type UserProfileSchema } from "@meal-prep/contracts";
+import {
+  RecipeResponseSchema,
+  type UserProfileSchema,
+} from "@meal-prep/contracts";
 import { useUserStore } from "../../stores/userStore";
 
 export type UpdateUserDietaryPreferencesDTO = {
   userId: string;
   dietaryPreferences: string[];
+};
+
+export type UpdateUserSavedMealsListDTO = {
+  userId: string;
+  newMeal: RecipeResponseSchema;
 };
 
 export const useGetUserProfile = (id: string | undefined) => {
@@ -48,6 +57,24 @@ export const useUpdateUserDietaryPreferencesMutation = ({
     UpdateUserDietaryPreferencesDTO
   >({
     mutationFn: (data) => updateUserDietaryPreferences(data),
+    onSuccess,
+    onError,
+  });
+
+export const useUpdateUserSavedMealsListMutation = ({
+  onSuccess,
+  onError,
+}: UseMutationOptions<
+  PostgrestSingleResponse<null>,
+  Error,
+  UpdateUserSavedMealsListDTO
+>) =>
+  useMutation<
+    PostgrestSingleResponse<null>,
+    Error,
+    UpdateUserSavedMealsListDTO
+  >({
+    mutationFn: (data) => updateUserSavedMealsList(data),
     onSuccess,
     onError,
   });

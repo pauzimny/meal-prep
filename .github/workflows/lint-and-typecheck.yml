@@ -27,7 +27,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint all packages
-        run: pnpm run lint --reporter=github
+        run: pnpm run lint
 
       - name: Typecheck all packages
         run: pnpm tsc -b --pretty

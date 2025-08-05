@@ -27,10 +27,11 @@ export class OpenAIController {
       }
 
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error querying OpenAI:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       throw new HttpException(
-        'Error communicating with OpenAI',
+        `Error communicating with OpenAI: ${errorMessage}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

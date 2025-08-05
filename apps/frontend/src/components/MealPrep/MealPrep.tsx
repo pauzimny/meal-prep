@@ -10,6 +10,7 @@ import { MealSuggestionResult } from "../MealSuggestionResult/MealSuggestionResu
 import { Loader } from "lucide-react";
 import { SelectMealType } from "./SelectMealType";
 import { useUserStore } from "../../stores/userStore";
+import { useUpdateUserSavedMealsListMutation } from "../../query-hooks/user/useUserProfile";
 
 const initialIngredient = {
   name: "",
@@ -24,11 +25,28 @@ export function MealPrep() {
   const [mealType, setMealType] = useState<string>("");
 
   const { mutate, error, isPending, data } = useGenerateRecipe();
+  const { mutate: saveMeal } = useUpdateUserSavedMealsListMutation({
+    onSuccess: () => {
+      console.log("Meal saved successfully");
+    },
+    onError: (error) => {
+      console.error("Error saving meal:", error);
+    },
+  });
 
   const userProfile = useUserStore((state) => state.user);
 
   console.log("meal suggestions:", data);
   console.log("userProfile", userProfile);
+
+  const handleSaveMeal = () => {
+    if (!userProfile?.id || !data) return;
+
+    saveMeal({
+      userId: userProfile?.id,
+      newMeal: data,
+    });
+  };
 
   const handleAddIngredient = () => {
     if (newIngredient.name && newIngredient.quantity > 0) {
@@ -112,7 +130,7 @@ export function MealPrep() {
 
         {!!error && <div className="text-red-700 mt-2">{error.message}</div>}
       </div>
-      {data && <MealSuggestionResult {...data} />}
+      {data && <MealSuggestionResult {...data} onHeartClick={handleSaveMeal} />}
     </div>
   );
 }

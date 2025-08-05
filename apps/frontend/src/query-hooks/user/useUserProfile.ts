@@ -10,7 +10,7 @@ import {
 } from "../../lib/supabase/user";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
 import {
-  RecipeResponseSchema,
+  type RecipeResponseSchema,
   type UserProfileSchema,
 } from "@meal-prep/contracts";
 import { useUserStore } from "../../stores/userStore";

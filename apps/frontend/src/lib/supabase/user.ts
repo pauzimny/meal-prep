@@ -1,7 +1,7 @@
 import { type UserProfileSchema } from "@meal-prep/contracts";
 import { supabase } from "./client";
 import {
-  UpdateUserSavedMealsListDTO,
+  type UpdateUserSavedMealsListDTO,
   type UpdateUserDietaryPreferencesDTO,
 } from "../../query-hooks/user/useUserProfile";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";

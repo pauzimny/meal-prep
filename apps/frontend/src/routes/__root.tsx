@@ -8,9 +8,13 @@ import { Heading } from "../components/Heading";
 import { type AppRouterContext } from "../lib/types";
 import { useAuthStore } from "../stores/authStore";
 import { NavLink } from "../components/NavLink";
+import { useGetUserProfile } from "../query-hooks/user/useUserProfile";
 
 function RootComponent() {
   const user = useAuthStore((state) => state.user);
+
+  useGetUserProfile(user?.id);
+
   return (
     <div className="w-full min-h-[100vh] flex flex-col">
       {!!user && (

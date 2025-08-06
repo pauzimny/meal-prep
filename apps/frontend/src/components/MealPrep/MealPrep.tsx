@@ -23,18 +23,22 @@ export function MealPrep() {
   const [newIngredient, setNewIngredient] =
     useState<Ingredient>(initialIngredient);
   const [mealType, setMealType] = useState<string>("");
+  const userProfile = useUserStore((state) => state.user);
+  const setUserProfile = useUserStore((state) => state.setUser);
 
   const { mutate, error, isPending, data } = useGenerateRecipe();
   const { mutate: saveMeal } = useUpdateUserSavedMealsListMutation({
     onSuccess: () => {
       console.log("Meal saved successfully");
+      setUserProfile({
+        ...userProfile!,
+        saved_meals: [...userProfile!.saved_meals, data],
+      });
     },
     onError: (error) => {
       console.error("Error saving meal:", error);
     },
   });
-
-  const userProfile = useUserStore((state) => state.user);
 
   console.log("meal suggestions:", data);
   console.log("userProfile", userProfile);

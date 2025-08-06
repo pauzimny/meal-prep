@@ -19,7 +19,7 @@ export function SavedMeals() {
   return (
     <ul>
       {mealsList?.map((meal) => (
-        <MealSuggestionResult {...meal} />
+        <MealSuggestionResult {...meal} key={meal.title} />
       ))}
     </ul>
   );

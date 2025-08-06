@@ -7,6 +7,10 @@ export const testUserProfile: UserProfileSchema = {
   meal_count: 5,
   favourite_cuisine: "Italian",
   dietary_preferences: ["Vegetarian", "Gluten-Free"],
+  id: "123",
+  created_at: "10-07-2025",
+  avatar_url: "",
+  saved_meals: [],
 };
 
 export const testAuthUser: User = {

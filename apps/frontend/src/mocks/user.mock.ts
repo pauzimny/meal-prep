@@ -8,4 +8,6 @@ export const mockedUser: UserProfileSchema = {
   favourite_cuisine: "Spaghetti",
   dietary_preferences: ["low carb", "gluten free"],
   avatar_url: "",
+  created_at: "10-07-2025",
+  saved_meals: [],
 };

@@ -1,6 +1,7 @@
 const js = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const react = require("eslint-plugin-react");
+const path = require("path");
 
 module.exports = [
   {
@@ -14,11 +15,13 @@ module.exports = [
       "dist/",
       "build/",
       "node_modules/",
+      "database.types.ts",
+      "e2e/testHelpers.ts",
     ],
   },
 
   js.configs.recommended,
-
+  ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.recommended,
 
   {
@@ -28,7 +31,7 @@ module.exports = [
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-        project: ["./tsconfig.json"],
+        project: [path.join(__dirname, "tsconfig.eslint.json")],
         tsconfigRootDir: __dirname,
       },
       globals: {
@@ -63,6 +66,10 @@ module.exports = [
           argsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-unsafe-assignment": "warn",
+      "@typescript-eslint/no-misused-promises": "warn",
+      "@typescript-eslint/no-unnecessary-type-assertion": "warn",
     },
   },
 ];

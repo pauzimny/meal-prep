@@ -9,7 +9,7 @@ export const Route = createFileRoute("/profile")({
   component: ProfileRoute,
   beforeLoad: ({ context }) => {
     if (!context.user) {
-      throw redirect({ to: "/auth" });
+      return redirect({ to: "/auth" });
     }
   },
 });

@@ -113,6 +113,7 @@ export function Auth() {
             dietary_preferences: [],
             avatar_url: null,
             created_at: new Date().toISOString(),
+            saved_meals: [],
           };
 
           const { error: insertError } = await addNewUserProfile(

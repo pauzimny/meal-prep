@@ -8,7 +8,7 @@ function HomeRoute() {
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {
     if (!context.user) {
-      throw redirect({ to: "/auth" });
+      return redirect({ to: "/auth" });
     }
   },
   component: HomeRoute,

@@ -3,6 +3,9 @@ const tseslint = require("typescript-eslint");
 const react = require("eslint-plugin-react");
 const path = require("path");
 
+console.log("🧩 ESLint config loaded from:", __dirname);
+console.log("🧩 Using tsconfig at:", __dirname + "/tsconfig.json");
+
 module.exports = [
   {
     ignores: [
@@ -31,7 +34,7 @@ module.exports = [
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-        project: [path.join(__dirname, "tsconfig.eslint.json")],
+        project: [path.resolve(__dirname, "tsconfig.eslint.json")],
         tsconfigRootDir: __dirname,
       },
       globals: {

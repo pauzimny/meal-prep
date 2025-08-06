@@ -19,7 +19,7 @@ function RootComponent() {
     <div className="w-full min-h-[100vh] flex flex-col">
       {!!user && (
         <div className="sticky top-0 z-10">
-          <Heading email={user.email} name={user.name} />
+          <Heading email={user.email!} name={user.name!} />
           <div className="py-4 px-6 flex gap-6 bg-white">
             <NavLink to="/" activeProps={{}} activeOptions={{ exact: true }}>
               Home

@@ -1,14 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["apps/frontend/src/*"]
-    },
-    "composite": true,
-    "strictNullChecks": true,
-    "strict": true
+    "jsx": "react-jsx"
   },
-  "extends": "./tsconfig.app.json",
-  "files": [],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  //   "include": ["src"],
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
+  "references": [{ "path": "../../packages/contracts" }]
 }

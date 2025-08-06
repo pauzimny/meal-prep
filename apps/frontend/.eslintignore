@@ -1,0 +1,6 @@
+eslint.config.*
+tailwind.config.js
+vite.config.ts
+postcss.config.js
+*.config.js
+*.config.cjs

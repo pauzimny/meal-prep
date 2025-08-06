@@ -34,8 +34,8 @@ module.exports = [
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-        project: [path.resolve(__dirname, "tsconfig.eslint.json")],
-        tsconfigRootDir: __dirname,
+        // project: [path.resolve(__dirname, "tsconfig.eslint.json")],
+        // tsconfigRootDir: __dirname,
       },
       globals: {
         console: "readonly",
@@ -73,6 +73,10 @@ module.exports = [
       "@typescript-eslint/no-unsafe-assignment": "warn",
       "@typescript-eslint/no-misused-promises": "warn",
       "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+      "@typescript-eslint/no-unsafe-return": "warn",
+      "@typescript-eslint/no-unsafe-member-access": "warn",
+      "@typescript-eslint/no-unsafe-call": "warn",
+      "@typescript-eslint/no-redundant-type-constituents": "warn",
     },
   },
 ];

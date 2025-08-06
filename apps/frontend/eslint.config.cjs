@@ -77,6 +77,7 @@ module.exports = [
       "@typescript-eslint/no-unsafe-member-access": "warn",
       "@typescript-eslint/no-unsafe-call": "warn",
       "@typescript-eslint/no-redundant-type-constituents": "warn",
+      "@typescript-eslint/no-unsafe-argument": "warn",
     },
   },
 ];

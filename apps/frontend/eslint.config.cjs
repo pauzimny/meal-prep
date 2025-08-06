@@ -34,8 +34,8 @@ module.exports = [
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-        // project: [path.resolve(__dirname, "tsconfig.eslint.json")],
-        // tsconfigRootDir: __dirname,
+        project: [path.resolve(__dirname, "tsconfig.eslint.json")],
+        tsconfigRootDir: __dirname,
       },
       globals: {
         console: "readonly",

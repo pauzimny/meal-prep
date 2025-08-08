@@ -16,7 +16,7 @@ export const useGenerateRecipe = (): UseMutationResult<
       });
 
       if (!res.ok) throw new Error("Coś poszło nie tak");
-      const data: RecipeResponseSchema = await res.json();
+      const data = (await res.json()) as RecipeResponseSchema;
       return data;
     },
   });

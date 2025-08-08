@@ -70,7 +70,7 @@ export function Profile() {
 
     mutate({
       dietaryPreferences: updatedPreferences,
-      userId: userProfile.id!,
+      userId: userProfile.id,
     });
   };
 

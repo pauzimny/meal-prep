@@ -62,6 +62,7 @@ export class OpenAIService {
         description: null,
         ingredients: null,
         bullets: [],
+        id: '',
       }
     );
   }

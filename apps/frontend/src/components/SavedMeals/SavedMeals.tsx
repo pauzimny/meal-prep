@@ -19,7 +19,8 @@ export function SavedMeals() {
     );
   };
 
-  const handleRemoveMeal = (mealId: string) => {
+  const handleRemoveMeal = (e: React.MouseEvent, mealId: string) => {
+    e.stopPropagation();
     console.log(mealId);
   };
 
@@ -61,7 +62,7 @@ export function SavedMeals() {
                 variant="outline"
                 size="sm"
                 className="border-red-700 hover:bg-red-200"
-                onClick={() => handleRemoveMeal(meal.id)}
+                onClick={(e) => handleRemoveMeal(e, meal.id)}
               >
                 <Trash className="h-4 w-4 text-red-700" />
               </IconButton>

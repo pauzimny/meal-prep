@@ -61,7 +61,7 @@ describe("Profile", () => {
   });
 
   it("Shows loading state initially", () => {
-    useUserStore.setState({ user: null, isLoading: true });
+    useUserStore.setState({ user: null });
     render(<Profile />);
 
     expect(screen.getByText("Loading profile...")).toBeInTheDocument();

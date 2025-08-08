@@ -32,7 +32,7 @@ export function MealPrep() {
       console.log("Meal saved successfully");
       setUserProfile({
         ...userProfile!,
-        saved_meals: [...userProfile!.saved_meals, data],
+        saved_meals: userProfile!.saved_meals.concat(data!),
       });
     },
     onError: (error) => {

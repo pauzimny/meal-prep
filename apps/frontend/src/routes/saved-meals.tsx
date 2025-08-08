@@ -5,7 +5,7 @@ export const Route = createFileRoute("/saved-meals")({
   component: SavedMeals,
   beforeLoad: ({ context }) => {
     if (!context.user) {
-      throw redirect({ to: "/auth" });
+      return redirect({ to: "/auth" });
     }
   },
 });

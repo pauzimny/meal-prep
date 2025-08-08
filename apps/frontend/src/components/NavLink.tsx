@@ -1,6 +1,6 @@
 import { Link, type LinkProps, useRouterState } from "@tanstack/react-router";
 
-type RoutePath = "/" | "/profile" | "/auth";
+type RoutePath = "/" | "/profile" | "/auth" | "/saved-meals";
 
 export interface NavLinkProps extends LinkProps {
   children: React.ReactNode;

@@ -1,4 +1,7 @@
-import { type UserProfileSchema } from "@meal-prep/contracts";
+import {
+  RecipeResponseSchema,
+  type UserProfileSchema,
+} from "@meal-prep/contracts";
 import { supabase } from "./client";
 import {
   type UpdateUserSavedMealsListDTO,
@@ -34,17 +37,17 @@ export const updateUserSavedMealsList = async ({
     .from("users")
     .select("saved_meals")
     .eq("id", userId)
-    .single<{ saved_meals: string[] | null }>();
+    .single<{ saved_meals: RecipeResponseSchema[] | null }>();
 
   const currentSavedMeals = userSavedMealsObject?.saved_meals || [];
 
-  let updatedSavedMeals: string[];
-  if (currentSavedMeals.includes(mealData.id)) {
+  let updatedSavedMeals: RecipeResponseSchema[];
+  if (currentSavedMeals.some((meal) => meal.id === mealData.id)) {
     updatedSavedMeals = currentSavedMeals.filter(
-      (meal) => meal !== mealData.id
+      (meal) => meal.id !== mealData.id
     );
   } else {
-    updatedSavedMeals = [...currentSavedMeals, mealData.id];
+    updatedSavedMeals = [...currentSavedMeals, mealData];
   }
 
   return await supabase

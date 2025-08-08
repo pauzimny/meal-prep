@@ -61,7 +61,7 @@ export function Profile() {
     setIsEditingDietaryPreferences((prev) => !prev);
   };
 
-  const handleAddPreference = async () => {
+  const handleAddPreference = () => {
     if (!newPreference.trim() || !userProfile) return;
     const updatedPreferences = [...dietaryPreferences, newPreference.trim()];
     setSaving(true);

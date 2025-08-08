@@ -1,8 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { type RecipeResponseSchema } from "@meal-prep/contracts";
 
-export const useGenerateRecipe = () => {
-  return useMutation({
-    mutationFn: async (prompt: string) => {
+export const useGenerateRecipe = (): UseMutationResult<
+  RecipeResponseSchema,
+  Error,
+  string
+> => {
+  return useMutation<RecipeResponseSchema, Error, string>({
+    mutationFn: async (prompt: string): Promise<RecipeResponseSchema> => {
       // TODO: ENVS!
       const res = await fetch("http://localhost:3001/api/openai/ask", {
         method: "POST",
@@ -11,7 +16,7 @@ export const useGenerateRecipe = () => {
       });
 
       if (!res.ok) throw new Error("Coś poszło nie tak");
-      const data = await res.json();
+      const data: RecipeResponseSchema = await res.json();
       return data;
     },
   });

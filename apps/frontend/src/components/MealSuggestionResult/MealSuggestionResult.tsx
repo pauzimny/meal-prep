@@ -1,15 +1,29 @@
+import { type RecipeResponseSchema } from "@meal-prep/contracts";
 import { Card } from "../ui/card";
-import { type MealSuggestionResultProps } from "./types";
+import { IconButton } from "../ui/icon-button";
+import { Heart } from "lucide-react";
+
+export interface MealSuggestionResultProps extends RecipeResponseSchema {
+  onHeartClick?: () => void;
+}
 
 export const MealSuggestionResult = ({
   title,
   description,
   bullets,
   ingredients,
+  onHeartClick,
 }: MealSuggestionResultProps) => {
   return (
     <Card className="p-6 my-6 max-w-4xl mx-auto">
-      <h4 className="text-2xl font-bold text-primary mb-2 ">{title}</h4>
+      <div className="flex justify-between items-center">
+        <h4 className="text-2xl font-bold text-primary mb-2 ">{title}</h4>
+        {onHeartClick && (
+          <IconButton variant="outline" size="icon" onClick={onHeartClick}>
+            <Heart className="w-6 h-6 text-primary" />
+          </IconButton>
+        )}
+      </div>
       <p className="text-gray-700 mb-4  text-lg">{description}</p>
       {ingredients && ingredients.length > 0 && (
         <div className="mb-4">

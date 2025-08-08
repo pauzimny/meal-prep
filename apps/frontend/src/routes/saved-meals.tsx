@@ -1,15 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { MealPrep } from "../components/MealPrep/MealPrep";
+import { SavedMeals } from "../components/SavedMeals/SavedMeals";
 
-function HomeRoute() {
-  return <MealPrep />;
-}
-
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/saved-meals")({
+  component: SavedMeals,
   beforeLoad: ({ context }) => {
     if (!context.user) {
       return redirect({ to: "/auth" });
     }
   },
-  component: HomeRoute,
 });

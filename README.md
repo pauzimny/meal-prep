@@ -40,7 +40,7 @@ VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 
 ```
 cd apps/frontend
-supabase ini
+supabase init
 ```
 
 - Start Supabase locally

@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { QuantitySelector } from "../QuantitySelector";
@@ -24,24 +25,22 @@ export function MealPrep() {
     useState<Ingredient>(initialIngredient);
   const [mealType, setMealType] = useState<string>("");
   const userProfile = useUserStore((state) => state.user);
+
   const setUserProfile = useUserStore((state) => state.setUser);
 
   const { mutate, error, isPending, data } = useGenerateRecipe();
   const { mutate: saveMeal } = useUpdateUserSavedMealsListMutation({
     onSuccess: () => {
-      console.log("Meal saved successfully");
+      toast.success("Your meal has been saved!");
       setUserProfile({
         ...userProfile!,
         saved_meals: userProfile!.saved_meals.concat(data!),
       });
     },
-    onError: (error) => {
-      console.error("Error saving meal:", error);
+    onError: () => {
+      toast.error("Error saving meal");
     },
   });
-
-  console.log("meal suggestions:", data);
-  console.log("userProfile", userProfile);
 
   const handleSaveMeal = () => {
     if (!userProfile?.id || !data) return;
@@ -72,9 +71,6 @@ export function MealPrep() {
   }, []);
 
   const handleSubmit = () => {
-    console.log("Ingredients:", ingredients);
-    console.log("Meal Type:", mealType);
-
     const prompt = generatePrompt({
       ingredients,
       mealType,

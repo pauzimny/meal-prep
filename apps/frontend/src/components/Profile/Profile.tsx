@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
@@ -30,6 +31,7 @@ export function Profile() {
 
   const { mutate } = useUpdateUserDietaryPreferencesMutation({
     onSuccess: (_, variables) => {
+      toast.success("Your dietary preferences have been updated!");
       setDietaryPreferences(variables.dietaryPreferences);
       setUserProfile({
         ...userProfile!,
@@ -40,9 +42,9 @@ export function Profile() {
       setSaving(false);
     },
     onError: (error) => {
-      console.error("error:", error.message);
+      console.error("Error updating dietary preferences:", error);
+      toast.error("Error updating dietary preferences");
       setSaving(false);
-      alert("Failed to update dietary preferences");
     },
   });
 

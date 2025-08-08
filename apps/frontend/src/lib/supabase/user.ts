@@ -1,4 +1,7 @@
-import { type UserProfileSchema } from "@meal-prep/contracts";
+import {
+  RecipeResponseSchema,
+  type UserProfileSchema,
+} from "@meal-prep/contracts";
 import { supabase } from "./client";
 import {
   type UpdateUserSavedMealsListDTO,
@@ -28,16 +31,24 @@ export const updateUserDietaryPreferences = async ({
 
 export const updateUserSavedMealsList = async ({
   userId,
-  newMeal,
+  mealData,
 }: UpdateUserSavedMealsListDTO): Promise<PostgrestSingleResponse<null>> => {
-  const { data: currentUser } = await supabase
+  const { data: userSavedMealsObject } = await supabase
     .from("users")
     .select("saved_meals")
     .eq("id", userId)
-    .single();
+    .single<{ saved_meals: RecipeResponseSchema[] | null }>();
 
-  const currentSavedMeals = currentUser?.saved_meals || [];
-  const updatedSavedMeals = [...currentSavedMeals, newMeal];
+  const currentSavedMeals = userSavedMealsObject?.saved_meals || [];
+
+  let updatedSavedMeals: RecipeResponseSchema[];
+  if (currentSavedMeals.some((meal) => meal.id === mealData.id)) {
+    updatedSavedMeals = currentSavedMeals.filter(
+      (meal) => meal.id !== mealData.id
+    );
+  } else {
+    updatedSavedMeals = [...currentSavedMeals, mealData];
+  }
 
   return await supabase
     .from("users")

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 export const recipeResponseSchema = z.object({
+  id: z.string().uuid(),
   title: z.string(),
   bullets: z.array(z.string()),
   description: z.string().nullable(),

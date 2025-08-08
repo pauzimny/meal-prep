@@ -47,7 +47,7 @@ export function MealPrep() {
 
     saveMeal({
       userId: userProfile?.id,
-      newMeal: data,
+      mealData: data,
     });
   };
 

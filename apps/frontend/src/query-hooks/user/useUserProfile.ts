@@ -22,7 +22,7 @@ export type UpdateUserDietaryPreferencesDTO = {
 
 export type UpdateUserSavedMealsListDTO = {
   userId: string;
-  newMeal: RecipeResponseSchema;
+  mealData: RecipeResponseSchema;
 };
 
 export const useGetUserProfile = (id: string | undefined) => {
